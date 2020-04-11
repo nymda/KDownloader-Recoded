@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dlBackend.cs" />
     <Compile Include="Entry.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -112,6 +112,7 @@
             this.Controls.Add(this.mainPB);
             this.Name = "viewer";
             this.Text = "Viewer";
+            this.Load += new System.EventHandler(this.viewer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mainPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBtwo)).EndInit();

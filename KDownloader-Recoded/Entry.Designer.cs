@@ -70,6 +70,7 @@
             this.outputSelect.TabIndex = 1;
             this.outputSelect.Text = "Output";
             this.outputSelect.UseVisualStyleBackColor = true;
+            this.outputSelect.Click += new System.EventHandler(this.outputSelect_Click);
             // 
             // folderSelect
             // 
@@ -79,6 +80,7 @@
             this.folderSelect.TabIndex = 2;
             this.folderSelect.Text = "Image Folder";
             this.folderSelect.UseVisualStyleBackColor = true;
+            this.folderSelect.Click += new System.EventHandler(this.folderSelect_Click);
             // 
             // GBfiles
             // 
@@ -230,6 +232,7 @@
             this.btnStart.TabIndex = 7;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // Entry
             // 
@@ -273,9 +276,9 @@
         private System.Windows.Forms.NumericUpDown NUDthreads;
         private System.Windows.Forms.GroupBox GBcamBrand;
         private System.Windows.Forms.Button addCamera;
-        private System.Windows.Forms.CheckedListBox CDATselect;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnViewCdat;
+        public System.Windows.Forms.CheckedListBox CDATselect;
     }
 }
 

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -23,6 +24,8 @@ namespace KDownloader_Recoded
 
         public List<camData> pubDataList = new List<camData> { };
         public List<String> ipAddrs = new List<String> { };
+        public string savePath = "";
+        public string saveImgPath = "";
         public int ipCount = 0;
         public int threadCount = 1;
 
@@ -89,6 +92,30 @@ namespace KDownloader_Recoded
         {
             viewCdatValues vcd = new viewCdatValues(setCamData);
             vcd.Show();
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void outputSelect_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog dlg = new SaveFileDialog())
+            {
+                dlg.Title = "Open Input File";
+                dlg.Filter = "Text Files | *.txt";
+
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    savePath = dlg.FileName;
+                }
+            }
+        }
+
+        private void folderSelect_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
