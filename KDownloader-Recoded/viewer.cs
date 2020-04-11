@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace KDownloader_Recoded
 {
-    public partial class Form1 : Form
+    public partial class viewer : Form
     {
-        public Form1()
+        public viewer()
         {
             InitializeComponent();
         }
