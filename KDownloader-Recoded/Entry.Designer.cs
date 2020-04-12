@@ -155,6 +155,7 @@
             this.CBthreadDebug.TabIndex = 8;
             this.CBthreadDebug.Text = "Show debug";
             this.CBthreadDebug.UseVisualStyleBackColor = true;
+            this.CBthreadDebug.CheckedChanged += new System.EventHandler(this.CBthreadDebug_CheckedChanged);
             // 
             // LBthreads
             // 
@@ -177,7 +178,7 @@
             this.NUDthreads.Size = new System.Drawing.Size(74, 20);
             this.NUDthreads.TabIndex = 6;
             this.NUDthreads.Value = new decimal(new int[] {
-            1,
+            4,
             0,
             0,
             0});

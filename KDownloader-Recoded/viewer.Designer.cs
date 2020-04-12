@@ -44,41 +44,51 @@
             // 
             // mainPB
             // 
+            this.mainPB.BackColor = System.Drawing.Color.Silver;
             this.mainPB.Location = new System.Drawing.Point(12, 12);
             this.mainPB.Name = "mainPB";
             this.mainPB.Size = new System.Drawing.Size(640, 358);
+            this.mainPB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.mainPB.TabIndex = 0;
             this.mainPB.TabStop = false;
             // 
             // subPBone
             // 
+            this.subPBone.BackColor = System.Drawing.Color.Silver;
             this.subPBone.Location = new System.Drawing.Point(658, 12);
             this.subPBone.Name = "subPBone";
             this.subPBone.Size = new System.Drawing.Size(160, 85);
+            this.subPBone.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.subPBone.TabIndex = 1;
             this.subPBone.TabStop = false;
             // 
             // subPBtwo
             // 
+            this.subPBtwo.BackColor = System.Drawing.Color.Silver;
             this.subPBtwo.Location = new System.Drawing.Point(658, 103);
             this.subPBtwo.Name = "subPBtwo";
             this.subPBtwo.Size = new System.Drawing.Size(160, 85);
+            this.subPBtwo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.subPBtwo.TabIndex = 2;
             this.subPBtwo.TabStop = false;
             // 
             // subPBthree
             // 
+            this.subPBthree.BackColor = System.Drawing.Color.Silver;
             this.subPBthree.Location = new System.Drawing.Point(658, 194);
             this.subPBthree.Name = "subPBthree";
             this.subPBthree.Size = new System.Drawing.Size(160, 85);
+            this.subPBthree.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.subPBthree.TabIndex = 3;
             this.subPBthree.TabStop = false;
             // 
             // subPBfour
             // 
+            this.subPBfour.BackColor = System.Drawing.Color.Silver;
             this.subPBfour.Location = new System.Drawing.Point(658, 285);
             this.subPBfour.Name = "subPBfour";
             this.subPBfour.Size = new System.Drawing.Size(160, 85);
+            this.subPBfour.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.subPBfour.TabIndex = 4;
             this.subPBfour.TabStop = false;
             // 

@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="addCamBrand.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="addCamBrand.Designer.cs">
+      <DependentUpon>addCamBrand.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entry.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +71,9 @@
     <Compile Include="viewer.Designer.cs">
       <DependentUpon>viewer.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="addCamBrand.resx">
+      <DependentUpon>addCamBrand.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Entry.resx">
       <DependentUpon>Entry.cs</DependentUpon>
     </EmbeddedResource>

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +29,7 @@ namespace KDownloader_Recoded
         public string savePath = "";
         public string saveImgPath = "";
         public int ipCount = 0;
-        public int threadCount = 1;
+        public int threadCount = 4;
 
         public camData setCamData;
 
@@ -35,6 +37,7 @@ namespace KDownloader_Recoded
         {
             populateDefaultCdatItems();
             CDATselect.CheckOnClick = true;
+            readCamConf();
         }
 
         public void populateDefaultCdatItems()
@@ -82,6 +85,26 @@ namespace KDownloader_Recoded
             }
         }
 
+        public void readCamConf()
+        {
+            string dir = Environment.CurrentDirectory;
+            string confFile = dir + "/brands.conf";
+            if (!File.Exists(confFile)){
+                File.Create(confFile);
+            }
+            else
+            {
+                string[] rawConfData = File.ReadAllLines(confFile);
+                foreach(string s in rawConfData)
+                {
+                    string[] splitCurrent = s.Split(':');
+                    camData cdTemp = new camData(splitCurrent[1], splitCurrent[0], new NetworkCredential(splitCurrent[2], splitCurrent[3]), false);
+                    CDATselect.Items.Add(cdTemp.Name);
+                    pubDataList.Add(cdTemp);
+                }
+            }
+        }
+
         private void NUDthreads_ValueChanged(object sender, EventArgs e)
         {
             threadCount = (int)NUDthreads.Value;
@@ -96,7 +119,13 @@ namespace KDownloader_Recoded
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-
+            if (CBrandOrd.Checked)
+            {
+                RNGCryptoServiceProvider rnd2 = new RNGCryptoServiceProvider();
+                ipAddrs = ipAddrs.OrderBy(x => GetNextInt32(rnd2)).ToList();
+            }
+            viewer v = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs);
+            v.Show();
         }
 
         private void outputSelect_Click(object sender, EventArgs e)
@@ -109,13 +138,35 @@ namespace KDownloader_Recoded
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     savePath = dlg.FileName;
+                    outputSelect.ForeColor = System.Drawing.Color.DarkGreen;
                 }
             }
         }
 
         private void folderSelect_Click(object sender, EventArgs e)
         {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                DialogResult result = fbd.ShowDialog();
 
+                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    saveImgPath = fbd.SelectedPath + "/";
+                    folderSelect.ForeColor = System.Drawing.Color.DarkGreen;
+                }
+            }
+        }
+
+        public static int GetNextInt32(RNGCryptoServiceProvider rnd)
+        {
+            byte[] randomInt = new byte[4];
+            rnd.GetBytes(randomInt);
+            return Convert.ToInt32(randomInt[0]);
+        }
+
+        private void CBthreadDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            //todo
         }
     }
 }
