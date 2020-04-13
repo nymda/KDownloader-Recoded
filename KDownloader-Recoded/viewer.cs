@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ namespace KDownloader_Recoded
 {
     public partial class viewer : Form
     {
+        public Random rnd = new Random();
         public int threadCount;
         public List<String> ipAddrs = new List<String> { };
         public int ipaCount = 0;
@@ -24,9 +26,15 @@ namespace KDownloader_Recoded
         public string imgdir = "";
         public string outdir = "";
         public Font luc = new Font("Lucida Console", 20);
-        public List<Bitmap> imgStore = new List<Bitmap> { };
+        //-public List<Bitmap> imgStore = new List<Bitmap> { };
         public int remoteSaveCounter = 0;
         public int remoteTestcounter = 0;
+
+        public Bitmap sr0;
+        public Bitmap sr1;
+        public Bitmap sr2;
+        public Bitmap sr3;
+        public Bitmap sr4;
 
         public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips)
         {
@@ -76,9 +84,9 @@ namespace KDownloader_Recoded
             for (int i = 1; i < threadCount; i++)
             {
                 sanity += seperatedIpList[i].Count();
-                Thread a = new Thread(() => mainTestThread(i, seperatedIpList[i], setCamData, ""));
-                a.IsBackground = true;
-                a.Start();
+                Thread testing = new Thread(() => mainTestThread(i, seperatedIpList[i], setCamData, imgdir));
+                testing.IsBackground = true;
+                testing.Start();
                 Thread.Sleep(500);
             }
 
@@ -99,10 +107,18 @@ namespace KDownloader_Recoded
 
             foreach(string ip in ips)
             {
-                remoteTestcounter++;
-                BarMain.Value = remoteTestcounter;
-                progressLbl.Text = "Progress: " + remoteTestcounter + "/" + ipaCount;
+                //if the viewer form doesnt exist, exit the thread
+                if (!this.IsHandleCreated)
+                {
+                    break;
+                }
 
+                remoteTestcounter++;
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    BarMain.Value = remoteTestcounter;
+                    progressLbl.Text = "Progress: " + remoteTestcounter + "/" + ipaCount;
+                }));
                 try
                 {           
                     string intIp = ip;
@@ -115,6 +131,9 @@ namespace KDownloader_Recoded
                     Console.WriteLine("Thrid " + thrid + " testing " + intIp);
 
                     byte[] dlData = wc.DownloadData("http://" + intIp + cdat.Path);
+
+                    
+
                     Bitmap bmp;
                     Graphics g;
                     using (var ms = new MemoryStream(dlData))
@@ -143,23 +162,28 @@ namespace KDownloader_Recoded
                     g.DrawString(intIp, luc, Brushes.White, new Point(1, 1));
                     g.DrawString(combinedCredsPT, luc, Brushes.White, new Point(1, 2 + (int)sizeOfIp.Height));
 
-                    imgStore.Insert(0, bmp);
+                    sr4 = sr3;
+                    sr3 = sr2;
+                    sr2 = sr1;
+                    sr1 = sr0;
+                    sr0 = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
 
-                    if (imgStore.Count > 5)
-                    {
-                        for (int i = 5; i < imgStore.Count; i++)
-                        {
-                            imgStore.RemoveAt(i);
-                        }
-                    }
+                    mainPB.Image = sr0;
+                    subPBone.Image = sr1;
+                    subPBtwo.Image = sr2;
+                    subPBthree.Image = sr3;
+                    subPBfour.Image = sr4;
 
-                    mainPB.Image = imgStore[0];
-                    subPBone.Image = imgStore[1];
-                    subPBtwo.Image = imgStore[2];
-                    subPBthree.Image = imgStore[3];
-                    subPBfour.Image = imgStore[4];
+                    remoteSaveCounter++;
+                    int rscLen = remoteSaveCounter.ToString().Length;
+                    string saveName = RandomString(5) + "_" + RandomString(10) + ".jpg";
+                    Bitmap save = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
+                    save.Save(dir + "/" + saveName);
 
-
+                    save.Dispose();
+                    bmp.Dispose();
+                    g.Dispose();
+                    GC.Collect();
                 }
                 catch
                 {
@@ -170,18 +194,20 @@ namespace KDownloader_Recoded
 
         public void populateBlankImages()
         {
-            Bitmap tm = new Bitmap(1, 1);
+            Bitmap tm = new Bitmap(160, 85);
             Graphics tg = Graphics.FromImage(tm);
             tg.DrawRectangle(Pens.Black, 0, 0, 1, 1);
-            for (int i = 0; i < 5; i++)
-            {
-                imgStore.Add(tm);
-            }
-            mainPB.Image = imgStore[0];
-            subPBone.Image = imgStore[1];
-            subPBtwo.Image = imgStore[2];
-            subPBthree.Image = imgStore[3];
-            subPBfour.Image = imgStore[4];
+            sr0 = tm;
+            sr1 = tm;
+            sr2 = tm;
+            sr3 = tm;
+            sr4 = tm;
+        }
+
+        public string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length).Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
 
         public class TimeWebClient : WebClient
@@ -193,5 +219,11 @@ namespace KDownloader_Recoded
                 return req;
             }
         }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            //e.Cancel = true;
+        }
+
     }
 }

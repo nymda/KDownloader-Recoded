@@ -44,6 +44,9 @@
             // 
             // mainPB
             // 
+            this.mainPB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.mainPB.BackColor = System.Drawing.Color.Silver;
             this.mainPB.Location = new System.Drawing.Point(12, 12);
             this.mainPB.Name = "mainPB";
@@ -54,6 +57,7 @@
             // 
             // subPBone
             // 
+            this.subPBone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.subPBone.BackColor = System.Drawing.Color.Silver;
             this.subPBone.Location = new System.Drawing.Point(658, 12);
             this.subPBone.Name = "subPBone";
@@ -64,6 +68,7 @@
             // 
             // subPBtwo
             // 
+            this.subPBtwo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.subPBtwo.BackColor = System.Drawing.Color.Silver;
             this.subPBtwo.Location = new System.Drawing.Point(658, 103);
             this.subPBtwo.Name = "subPBtwo";
@@ -74,6 +79,7 @@
             // 
             // subPBthree
             // 
+            this.subPBthree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.subPBthree.BackColor = System.Drawing.Color.Silver;
             this.subPBthree.Location = new System.Drawing.Point(658, 194);
             this.subPBthree.Name = "subPBthree";
@@ -84,6 +90,7 @@
             // 
             // subPBfour
             // 
+            this.subPBfour.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.subPBfour.BackColor = System.Drawing.Color.Silver;
             this.subPBfour.Location = new System.Drawing.Point(658, 285);
             this.subPBfour.Name = "subPBfour";
@@ -94,6 +101,8 @@
             // 
             // BarMain
             // 
+            this.BarMain.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.BarMain.Location = new System.Drawing.Point(12, 376);
             this.BarMain.Name = "BarMain";
             this.BarMain.Size = new System.Drawing.Size(806, 23);
@@ -101,6 +110,7 @@
             // 
             // progressLbl
             // 
+            this.progressLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.progressLbl.AutoSize = true;
             this.progressLbl.Location = new System.Drawing.Point(9, 402);
             this.progressLbl.Name = "progressLbl";
