@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
-using System.Text;
+using System.Text; 
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,10 +26,9 @@ namespace KDownloader_Recoded
         public string imgdir = "";
         public string outdir = "";
         public Font luc = new Font("Lucida Console", 20);
-        //-public List<Bitmap> imgStore = new List<Bitmap> { };
         public int remoteSaveCounter = 0;
         public int remoteTestcounter = 0;
-
+        
         public Bitmap sr0;
         public Bitmap sr1;
         public Bitmap sr2;
