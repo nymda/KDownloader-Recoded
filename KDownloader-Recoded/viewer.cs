@@ -131,8 +131,7 @@ namespace KDownloader_Recoded
 
                     byte[] dlData = wc.DownloadData("http://" + intIp + cdat.Path);
 
-                    
-
+                               
                     Bitmap bmp;
                     Graphics g;
                     using (var ms = new MemoryStream(dlData))
@@ -157,9 +156,10 @@ namespace KDownloader_Recoded
                     }
                     totalheight += 3;
                     largerWidth += 3;
-                    g.FillRectangle(Brushes.Black, 0, 0, largerWidth, totalheight);
-                    g.DrawString(intIp, luc, Brushes.White, new Point(1, 1));
-                    g.DrawString(combinedCredsPT, luc, Brushes.White, new Point(1, 2 + (int)sizeOfIp.Height));
+                    g.FillRectangle(Brushes.Beige, 2, 2, largerWidth + 7, totalheight + 7);
+                    g.FillRectangle(Brushes.Black, 5, 5, largerWidth, totalheight);
+                    g.DrawString(intIp, luc, Brushes.White, new Point(6, 7));
+                    g.DrawString(combinedCredsPT, luc, Brushes.White, new Point(5, 8 + (int)sizeOfIp.Height));
 
                     sr4 = sr3;
                     sr3 = sr2;
@@ -195,12 +195,18 @@ namespace KDownloader_Recoded
         {
             Bitmap tm = new Bitmap(160, 85);
             Graphics tg = Graphics.FromImage(tm);
-            tg.DrawRectangle(Pens.Black, 0, 0, 1, 1);
+            tg.DrawRectangle(Pens.Black, 0, 0, 159, 84);
             sr0 = tm;
             sr1 = tm;
             sr2 = tm;
             sr3 = tm;
             sr4 = tm;
+
+            mainPB.Image = sr0;
+            subPBone.Image = sr1;
+            subPBtwo.Image = sr2;
+            subPBthree.Image = sr3;
+            subPBfour.Image = sr4;
         }
 
         public string RandomString(int length)
@@ -221,8 +227,7 @@ namespace KDownloader_Recoded
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            //e.Cancel = true;
+            this.DialogResult = DialogResult.OK;
         }
-
     }
 }

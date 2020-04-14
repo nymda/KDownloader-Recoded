@@ -119,13 +119,26 @@ namespace KDownloader_Recoded
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            btnStart.Text = "Start - Spawning Threads";
+
+            this.Hide();
+
             if (CBrandOrd.Checked)
             {
                 RNGCryptoServiceProvider rnd2 = new RNGCryptoServiceProvider();
                 ipAddrs = ipAddrs.OrderBy(x => GetNextInt32(rnd2)).ToList();
             }
-            viewer v = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs);
-            v.Show();
+
+            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs)){
+                var res = form.ShowDialog();
+                if (res == DialogResult.OK) {
+                    this.Show();
+                }
+            }
+
+            btnStart.Text = "Start";
+            //viewer v = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs);
+            //v.Show();
         }
 
         private void outputSelect_Click(object sender, EventArgs e)
