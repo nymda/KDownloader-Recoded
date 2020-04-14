@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -25,7 +26,7 @@ namespace KDownloader_Recoded
         public camData setCamData;
         public string imgdir = "";
         public string outdir = "";
-        public Font luc = new Font("Lucida Console", 20);
+        public Font luc = new Font("Lucida Console", 15);
         public int remoteSaveCounter = 0;
         public int remoteTestcounter = 0;
         
@@ -34,6 +35,16 @@ namespace KDownloader_Recoded
         public Bitmap sr2;
         public Bitmap sr3;
         public Bitmap sr4;
+        public Bitmap sr5;
+        public Bitmap sr6;
+
+        public string sr0_name = "";
+        public string sr1_name = "";
+        public string sr2_name = "";
+        public string sr3_name = "";
+        public string sr4_name = "";
+        public string sr5_name = "";
+        public string sr6_name = "";
 
         public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips)
         {
@@ -52,7 +63,7 @@ namespace KDownloader_Recoded
             populateBlankImages();
             seperateAndSpawnThreads();
             ipaCount = ipAddrs.Count();
-            progressLbl.Text = "Progress: 0/" + ipaCount;
+            this.Text = "Viewer | Progress: 0/" + ipaCount;
             BarMain.Maximum = ipaCount;
         }
 
@@ -116,7 +127,7 @@ namespace KDownloader_Recoded
                 this.Invoke(new MethodInvoker(delegate ()
                 {
                     BarMain.Value = remoteTestcounter;
-                    progressLbl.Text = "Progress: " + remoteTestcounter + "/" + ipaCount;
+                    this.Text = "Viewer | Progress: " + remoteTestcounter + "/" + ipaCount;
                 }));
                 try
                 {           
@@ -161,6 +172,8 @@ namespace KDownloader_Recoded
                     g.DrawString(intIp, luc, Brushes.White, new Point(6, 7));
                     g.DrawString(combinedCredsPT, luc, Brushes.White, new Point(5, 8 + (int)sizeOfIp.Height));
 
+                    sr6 = sr5;
+                    sr5 = sr4;
                     sr4 = sr3;
                     sr3 = sr2;
                     sr2 = sr1;
@@ -172,12 +185,22 @@ namespace KDownloader_Recoded
                     subPBtwo.Image = sr2;
                     subPBthree.Image = sr3;
                     subPBfour.Image = sr4;
+                    subPBfive.Image = sr5;
+                    subPBsix.Image = sr6;
 
                     remoteSaveCounter++;
                     int rscLen = remoteSaveCounter.ToString().Length;
                     string saveName = RandomString(5) + "_" + RandomString(10) + ".jpg";
                     Bitmap save = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
                     save.Save(dir + "/" + saveName);
+
+                    sr6_name = sr5_name;
+                    sr5_name = sr4_name;
+                    sr4_name = sr3_name;
+                    sr3_name = sr2_name;
+                    sr2_name = sr1_name;
+                    sr1_name = sr0_name;
+                    sr0_name = saveName;
 
                     save.Dispose();
                     bmp.Dispose();
@@ -195,18 +218,23 @@ namespace KDownloader_Recoded
         {
             Bitmap tm = new Bitmap(160, 85);
             Graphics tg = Graphics.FromImage(tm);
-            tg.DrawRectangle(Pens.Black, 0, 0, 159, 84);
+            tg.DrawRectangle(Pens.Black, -2, -2, -1, -1);
+
             sr0 = tm;
             sr1 = tm;
             sr2 = tm;
             sr3 = tm;
             sr4 = tm;
+            sr5 = tm;
+            sr6 = tm;
 
             mainPB.Image = sr0;
             subPBone.Image = sr1;
             subPBtwo.Image = sr2;
             subPBthree.Image = sr3;
             subPBfour.Image = sr4;
+            subPBfive.Image = sr5;
+            subPBsix.Image = sr6;
         }
 
         public string RandomString(int length)
@@ -228,6 +256,61 @@ namespace KDownloader_Recoded
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             this.DialogResult = DialogResult.OK;
+        }
+
+        private void mainPB_Click(object sender, EventArgs e)
+        {
+            if(sr0_name != "") {
+                Process.Start(imgdir + "/" + sr0_name);
+            }
+        }
+
+        private void subPBone_Click(object sender, EventArgs e)
+        {
+            if (sr1_name != "")
+            {
+                Process.Start(imgdir + "/" + sr1_name);
+            }
+        }
+
+        private void subPBtwo_Click(object sender, EventArgs e)
+        {
+            if (sr2_name != "")
+            {
+                Process.Start(imgdir + "/" + sr2_name);
+            }
+        }
+
+        private void subPBthree_Click(object sender, EventArgs e)
+        {
+            if (sr3_name != "")
+            {
+                Process.Start(imgdir + "/" + sr3_name);
+            }
+        }
+
+        private void subPBfour_Click(object sender, EventArgs e)
+        {
+            if (sr4_name != "")
+            {
+                Process.Start(imgdir + "/" + sr4_name);
+            }
+        }
+
+        private void subPBfive_Click(object sender, EventArgs e)
+        {
+            if (sr5_name != "")
+            {
+                Process.Start(imgdir + "/" + sr5_name);
+            }
+        }
+
+        private void subPBsix_Click(object sender, EventArgs e)
+        {
+            if (sr6_name != "")
+            {
+                Process.Start(imgdir + "/" + sr6_name);
+            }
         }
     }
 }
