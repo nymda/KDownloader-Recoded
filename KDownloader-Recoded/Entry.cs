@@ -24,6 +24,9 @@ namespace KDownloader_Recoded
         public camData foscam = new camData("/snapshot.cgi", "foscam", new NetworkCredential("admin", ""), true);
         public camData sineoji = new camData("/tmpfs/auto.jpg", "sineoji", new NetworkCredential("user", "user"), true);
 
+        public string confFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/kdl/brands.conf";
+        public string confDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/kdl/";
+
         public List<camData> pubDataList = new List<camData> { };
         public List<String> ipAddrs = new List<String> { };
         public string savePath = "";
@@ -87,8 +90,10 @@ namespace KDownloader_Recoded
 
         public void readCamConf()
         {
-            string dir = Environment.CurrentDirectory;
-            string confFile = dir + "/brands.conf";
+            if (!Directory.Exists(confDir));
+            {
+                Directory.CreateDirectory(confDir);
+            }
             if (!File.Exists(confFile)){
                 File.Create(confFile);
             }
@@ -113,13 +118,22 @@ namespace KDownloader_Recoded
 
         private void btnViewCdat_Click(object sender, EventArgs e)
         {
-            viewCdatValues vcd = new viewCdatValues(setCamData);
-            vcd.Show();
+            using (var vcd = new viewCdatValues(setCamData, CDATselect.SelectedIndex))
+            {
+                var res = vcd.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    CDATselect.Items.Clear();
+                    pubDataList.Clear();
+                    readCamConf();
+                }
+            }
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            btnStart.Text = "Start - Spawning Threads";
+            Form loading = new spawningThreadMsg();
+            loading.Show();
 
             this.Hide();
 
@@ -129,7 +143,7 @@ namespace KDownloader_Recoded
                 ipAddrs = ipAddrs.OrderBy(x => GetNextInt32(rnd2)).ToList();
             }
 
-            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs)){
+            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading)){
                 var res = form.ShowDialog();
                 if (res == DialogResult.OK) {
                     this.Show();
@@ -180,6 +194,20 @@ namespace KDownloader_Recoded
         private void CBthreadDebug_CheckedChanged(object sender, EventArgs e)
         {
             //todo
+        }
+
+        private void addCamera_Click(object sender, EventArgs e)
+        {
+            using (var form = new addCamBrand())
+            {
+                var res = form.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    CDATselect.Items.Clear();
+                    pubDataList.Clear();
+                    readCamConf();
+                }
+            }
         }
     }
 }

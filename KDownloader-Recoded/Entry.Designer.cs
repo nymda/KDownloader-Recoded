@@ -68,7 +68,7 @@
             this.outputSelect.Name = "outputSelect";
             this.outputSelect.Size = new System.Drawing.Size(129, 23);
             this.outputSelect.TabIndex = 1;
-            this.outputSelect.Text = "Output";
+            this.outputSelect.Text = "Output (Optional)";
             this.outputSelect.UseVisualStyleBackColor = true;
             this.outputSelect.Click += new System.EventHandler(this.outputSelect_Click);
             // 
@@ -149,6 +149,7 @@
             // CBthreadDebug
             // 
             this.CBthreadDebug.AutoSize = true;
+            this.CBthreadDebug.Enabled = false;
             this.CBthreadDebug.Location = new System.Drawing.Point(9, 45);
             this.CBthreadDebug.Name = "CBthreadDebug";
             this.CBthreadDebug.Size = new System.Drawing.Size(86, 17);
@@ -214,6 +215,7 @@
             this.addCamera.TabIndex = 1;
             this.addCamera.Text = "Add";
             this.addCamera.UseVisualStyleBackColor = true;
+            this.addCamera.Click += new System.EventHandler(this.addCamera_Click);
             // 
             // CDATselect
             // 

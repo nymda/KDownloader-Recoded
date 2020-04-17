@@ -18,9 +18,13 @@ namespace KDownloader_Recoded
 {
     public partial class viewer : Form
     {
+        public Form showing;
+
         public Random rnd = new Random();
         public int threadCount;
         public List<String> ipAddrs = new List<String> { };
+        public List<String> workingIps = new List<String> { };
+        public bool useOutDir = true;
         public int ipaCount = 0;
         public List<List<String>> seperatedIpList = new List<List<String>> { };
         public camData setCamData;
@@ -46,9 +50,10 @@ namespace KDownloader_Recoded
         public string sr5_name = "";
         public string sr6_name = "";
 
-        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips)
+        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing)
         {
             InitializeComponent();
+            this.showing = showing;
             this.threadCount = threadCount;
             this.setCamData = cdat;
             this.imgdir = imgdir;
@@ -60,11 +65,17 @@ namespace KDownloader_Recoded
 
         private void viewer_Load(object sender, EventArgs e)
         {
+            if(outdir == "")
+            {
+                useOutDir = false;
+            }
+
             populateBlankImages();
             seperateAndSpawnThreads();
             ipaCount = ipAddrs.Count();
             this.Text = "Viewer | Progress: 0/" + ipaCount;
             BarMain.Maximum = ipaCount;
+            showing.Hide();
         }
 
         public void seperateAndSpawnThreads()
@@ -189,10 +200,16 @@ namespace KDownloader_Recoded
                     subPBsix.Image = sr6;
 
                     remoteSaveCounter++;
+                    workingIps.Add(ip);
                     int rscLen = remoteSaveCounter.ToString().Length;
                     string saveName = RandomString(5) + "_" + RandomString(10) + ".jpg";
                     Bitmap save = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
                     save.Save(dir + "/" + saveName);
+
+                    if (useOutDir)
+                    {
+                        File.WriteAllLines(outdir, workingIps);
+                    }
 
                     sr6_name = sr5_name;
                     sr5_name = sr4_name;
