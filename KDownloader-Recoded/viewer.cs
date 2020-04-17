@@ -19,6 +19,8 @@ namespace KDownloader_Recoded
     public partial class viewer : Form
     {
         public Form showing;
+        public debugLog frmDebug;
+
 
         public Random rnd = new Random();
         public int threadCount;
@@ -65,6 +67,9 @@ namespace KDownloader_Recoded
 
         private void viewer_Load(object sender, EventArgs e)
         {
+            frmDebug = new debugLog();
+            frmDebug.Show();
+
             if(outdir == "")
             {
                 useOutDir = false;
@@ -79,7 +84,8 @@ namespace KDownloader_Recoded
         }
 
         public void seperateAndSpawnThreads()
-        {
+        {           
+
             threadCount++;
 
             //populate list with empty lists
@@ -120,6 +126,9 @@ namespace KDownloader_Recoded
 
         public void mainTestThread(int thrid, List<String> ips, camData cdat, string dir)
         {
+            string thridAsText = "[" + thrid + "] ";
+
+            frmDebug.print(thridAsText + "Starting thread");
 
             List<String> goodIps = new List<String> { };
             TimeWebClient wc = new TimeWebClient();
@@ -131,6 +140,7 @@ namespace KDownloader_Recoded
                 //if the viewer form doesnt exist, exit the thread
                 if (!this.IsHandleCreated)
                 {
+                    frmDebug.print(thridAsText + "Handle lost! Killing myself");
                     break;
                 }
 
@@ -151,6 +161,7 @@ namespace KDownloader_Recoded
 
                     Console.WriteLine("Thrid " + thrid + " testing " + intIp);
 
+                    frmDebug.print(thridAsText + "Attempting DL on " + ip);
                     byte[] dlData = wc.DownloadData("http://" + intIp + cdat.Path);
 
                                
@@ -202,6 +213,9 @@ namespace KDownloader_Recoded
                     remoteSaveCounter++;
                     workingIps.Add(ip);
                     int rscLen = remoteSaveCounter.ToString().Length;
+
+                    frmDebug.print(thridAsText + "Saving created files");
+
                     string saveName = RandomString(5) + "_" + RandomString(10) + ".jpg";
                     Bitmap save = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
                     save.Save(dir + "/" + saveName);
@@ -229,6 +243,7 @@ namespace KDownloader_Recoded
 
                 }
             }
+            frmDebug.print(thridAsText + "All IPs tested. Thread will exit.");
         }
 
         public void populateBlankImages()
@@ -272,6 +287,8 @@ namespace KDownloader_Recoded
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            frmDebug.Hide();
+            Thread.Sleep(250);
             this.DialogResult = DialogResult.OK;
         }
 
