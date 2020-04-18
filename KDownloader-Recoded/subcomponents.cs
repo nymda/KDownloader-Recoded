@@ -40,12 +40,31 @@ namespace KDownloader_Recoded
 
     public class colourItem
     {
+        public Color ItemColor { get; set; }
+        public string Message { get; set; }
+
         public colourItem(Color c, string m)
         {
             ItemColor = c;
             Message = m;
         }
-        public Color ItemColor { get; set; }
-        public string Message { get; set; }
+    }
+
+    public class shiftItem
+    {
+        public Bitmap img { get; set; }
+        public string name { get; set; }
+
+        public shiftItem(Bitmap img, string name)
+        {
+            this.img = img;
+            this.name = name;
+        }
+
+        public void dispose()
+        {
+            img.Dispose();
+            name = null;
+        }
     }
 }
