@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.mainPB = new System.Windows.Forms.PictureBox();
             this.subPBone = new System.Windows.Forms.PictureBox();
             this.subPBtwo = new System.Windows.Forms.PictureBox();
@@ -36,6 +37,7 @@
             this.BarMain = new System.Windows.Forms.ProgressBar();
             this.subPBfive = new System.Windows.Forms.PictureBox();
             this.subPBsix = new System.Windows.Forms.PictureBox();
+            this.killswitchTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.mainPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBtwo)).BeginInit();
@@ -140,6 +142,11 @@
             this.subPBsix.TabStop = false;
             this.subPBsix.Click += new System.EventHandler(this.subPBsix_Click);
             // 
+            // killswitchTimer
+            // 
+            this.killswitchTimer.Interval = 500;
+            this.killswitchTimer.Tick += new System.EventHandler(this.killswitchTimer_Tick);
+            // 
             // viewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -177,5 +184,6 @@
         private System.Windows.Forms.ProgressBar BarMain;
         private System.Windows.Forms.PictureBox subPBfive;
         private System.Windows.Forms.PictureBox subPBsix;
+        private System.Windows.Forms.Timer killswitchTimer;
     }
 }

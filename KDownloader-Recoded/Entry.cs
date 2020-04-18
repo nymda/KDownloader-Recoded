@@ -90,8 +90,7 @@ namespace KDownloader_Recoded
 
         public void readCamConf()
         {
-            if (!Directory.Exists(confDir));
-            {
+            if (!Directory.Exists(confDir)){
                 Directory.CreateDirectory(confDir);
             }
             if (!File.Exists(confFile)){
@@ -143,7 +142,7 @@ namespace KDownloader_Recoded
                 ipAddrs = ipAddrs.OrderBy(x => GetNextInt32(rnd2)).ToList();
             }
 
-            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading)){
+            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading, CBthreadDebug.Checked)){
                 var res = form.ShowDialog();
                 if (res == DialogResult.OK) {
                     this.Show();

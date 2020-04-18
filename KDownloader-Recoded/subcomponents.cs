@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -35,5 +36,16 @@ namespace KDownloader_Recoded
             this.Creds = credentials;
             this.IsDefault = isDefault;    
         }
+    }
+
+    public class colourItem
+    {
+        public colourItem(Color c, string m)
+        {
+            ItemColor = c;
+            Message = m;
+        }
+        public Color ItemColor { get; set; }
+        public string Message { get; set; }
     }
 }

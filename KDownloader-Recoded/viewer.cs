@@ -20,7 +20,10 @@ namespace KDownloader_Recoded
     {
         public Form showing;
         public debugLog frmDebug;
-
+        public bool console = false;
+        public bool killSwitch = false;
+        public bool catchFirstClose = true;
+        public int deadThreads = 0;
 
         public Random rnd = new Random();
         public int threadCount;
@@ -52,7 +55,7 @@ namespace KDownloader_Recoded
         public string sr5_name = "";
         public string sr6_name = "";
 
-        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing)
+        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing, bool console)
         {
             InitializeComponent();
             this.showing = showing;
@@ -60,7 +63,16 @@ namespace KDownloader_Recoded
             this.setCamData = cdat;
             this.imgdir = imgdir;
             this.outdir = outdir;
+            this.console = console;
             ipAddrs = ips;
+        }
+
+        public void cPrint(Color c, string text)
+        {
+            if (console)
+            {
+                frmDebug.print(c, text);
+            }
         }
 
         public List<Bitmap> rollingBitmapDisplay = new List<Bitmap> { };
@@ -68,7 +80,10 @@ namespace KDownloader_Recoded
         private void viewer_Load(object sender, EventArgs e)
         {
             frmDebug = new debugLog();
-            frmDebug.Show();
+            if (console)
+            {
+                frmDebug.Show();
+            }
 
             if(outdir == "")
             {
@@ -81,6 +96,7 @@ namespace KDownloader_Recoded
             this.Text = "Viewer | Progress: 0/" + ipaCount;
             BarMain.Maximum = ipaCount;
             showing.Hide();
+            cPrint(Color.Green, "[M] Started viewer");
         }
 
         public void seperateAndSpawnThreads()
@@ -128,7 +144,7 @@ namespace KDownloader_Recoded
         {
             string thridAsText = "[" + thrid + "] ";
 
-            frmDebug.print(thridAsText + "Starting thread");
+            cPrint(Color.Black, thridAsText + "Starting thread");
 
             List<String> goodIps = new List<String> { };
             TimeWebClient wc = new TimeWebClient();
@@ -137,10 +153,15 @@ namespace KDownloader_Recoded
 
             foreach(string ip in ips)
             {
-                //if the viewer form doesnt exist, exit the thread
+                //if the viewer form doesnt exist, exit the thread#
+                if (killSwitch)
+                {
+                    cPrint(Color.Red, thridAsText + "Killswitch given! Killing myself!");
+                    break;
+                }
                 if (!this.IsHandleCreated)
                 {
-                    frmDebug.print(thridAsText + "Handle lost! Killing myself");
+                    cPrint(Color.Red, thridAsText + "Handle lost! Killing myself!");
                     break;
                 }
 
@@ -159,12 +180,9 @@ namespace KDownloader_Recoded
                         intIp = intIp.Substring(0, intIp.Length - 1);
                     }
 
-                    Console.WriteLine("Thrid " + thrid + " testing " + intIp);
-
-                    frmDebug.print(thridAsText + "Attempting DL on " + ip);
                     byte[] dlData = wc.DownloadData("http://" + intIp + cdat.Path);
+                    cPrint(Color.DarkGreen, thridAsText + ip + " | 200");
 
-                               
                     Bitmap bmp;
                     Graphics g;
                     using (var ms = new MemoryStream(dlData))
@@ -214,11 +232,11 @@ namespace KDownloader_Recoded
                     workingIps.Add(ip);
                     int rscLen = remoteSaveCounter.ToString().Length;
 
-                    frmDebug.print(thridAsText + "Saving created files");
-
                     string saveName = RandomString(5) + "_" + RandomString(10) + ".jpg";
                     Bitmap save = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
                     save.Save(dir + "/" + saveName);
+
+                    cPrint(Color.DarkGreen, thridAsText + "Wrote " + new FileInfo(dir + "/" + saveName).Length + " bytes to disk");
 
                     if (useOutDir)
                     {
@@ -238,12 +256,32 @@ namespace KDownloader_Recoded
                     g.Dispose();
                     GC.Collect();
                 }
+                catch(WebException ex)
+                {
+                    if (ex.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        var response = ex.Response as HttpWebResponse;
+                        if (response != null)
+                        {
+                            cPrint(Color.Gray, thridAsText + ip + " | " + (int)response.StatusCode);
+                        }
+                        else
+                        {
+                            cPrint(Color.Gray, thridAsText + ip + " | Null");
+                        }
+                    }
+                    else
+                    {
+                        cPrint(Color.Gray, thridAsText + ip + " | Down");
+                    }
+                }
                 catch
                 {
-
+                    cPrint(Color.Red, thridAsText + ip + " | Internal error");
                 }
             }
-            frmDebug.print(thridAsText + "All IPs tested. Thread will exit.");
+            deadThreads++;
+            cPrint(Color.Black, thridAsText + "Reaching end. Thread will exit.");
         }
 
         public void populateBlankImages()
@@ -287,9 +325,13 @@ namespace KDownloader_Recoded
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            frmDebug.Hide();
-            Thread.Sleep(250);
-            this.DialogResult = DialogResult.OK;
+            if (catchFirstClose)
+            {
+                e.Cancel = true;
+            }
+            cPrint(Color.Red, "[M] Close command given. Killing children and exiting.");
+            killSwitch = true;
+            killswitchTimer.Start();
         }
 
         private void mainPB_Click(object sender, EventArgs e)
@@ -344,6 +386,17 @@ namespace KDownloader_Recoded
             if (sr6_name != "")
             {
                 Process.Start(imgdir + "/" + sr6_name);
+            }
+        }
+
+        private void killswitchTimer_Tick(object sender, EventArgs e)
+        {
+            catchFirstClose = false;
+
+            if((deadThreads + 1) >= threadCount)
+            {
+                frmDebug.Hide();
+                this.DialogResult = DialogResult.OK;
             }
         }
     }

@@ -19,20 +19,33 @@ namespace KDownloader_Recoded
 
         private void debugLog_Load(object sender, EventArgs e)
         {
-            print("Starting : " + DateTime.Now);
+            print(Color.Black, "[M] Starting : " + DateTime.Now);
         }
 
-        public void print(string text)
+        public void print(Color c, string text)
         {
             this.Invoke(new MethodInvoker(delegate ()
             {
-                dbgList.Items.Insert(0, text);
+                dbgList.Items.Insert(0, new colourItem(c, text));
             }));
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             e.Cancel = true;
+        }
+
+        private void dbg_drawitem(object sender, DrawItemEventArgs e)
+        {
+            colourItem item = dbgList.Items[e.Index] as colourItem;
+            if (item != null)
+            {
+                e.Graphics.DrawString(item.Message, dbgList.Font, new SolidBrush(item.ItemColor), 0, e.Index * dbgList.ItemHeight);
+            }
+            else
+            {
+
+            }
         }
     }
 }

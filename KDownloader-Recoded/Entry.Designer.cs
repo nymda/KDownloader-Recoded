@@ -149,7 +149,6 @@
             // CBthreadDebug
             // 
             this.CBthreadDebug.AutoSize = true;
-            this.CBthreadDebug.Enabled = false;
             this.CBthreadDebug.Location = new System.Drawing.Point(9, 45);
             this.CBthreadDebug.Name = "CBthreadDebug";
             this.CBthreadDebug.Size = new System.Drawing.Size(86, 17);
