@@ -33,6 +33,8 @@ namespace KDownloader_Recoded
         public string saveImgPath = "";
         public int ipCount = 0;
         public int threadCount = 4;
+        public bool setInput = false;
+        public bool setImage = false;
 
         public camData setCamData;
 
@@ -79,6 +81,11 @@ namespace KDownloader_Recoded
 
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
+                    setInput = true;
+                    if(setInput && setImage)
+                    {
+                        btnStart.Enabled = true;
+                    }
                     ipAddrs = System.IO.File.ReadAllLines(dlg.FileName).ToList();
                     ipCount = ipAddrs.Count();
                     LBcount.Text = "IP count: " + ipCount;
@@ -177,6 +184,11 @@ namespace KDownloader_Recoded
 
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
+                    setImage = true;
+                    if (setInput && setImage)
+                    {
+                        btnStart.Enabled = true;
+                    }
                     saveImgPath = fbd.SelectedPath + "/";
                     folderSelect.ForeColor = System.Drawing.Color.DarkGreen;
                 }

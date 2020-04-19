@@ -245,6 +245,7 @@
             // 
             // btnStart
             // 
+            this.btnStart.Enabled = false;
             this.btnStart.Location = new System.Drawing.Point(12, 299);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(348, 23);

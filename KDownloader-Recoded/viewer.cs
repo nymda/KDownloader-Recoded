@@ -218,10 +218,6 @@ namespace KDownloader_Recoded
                     ipSafe = ipSafe.Replace(":", "-");
 
                     string saveName = RandomString(5) + "-" + ipSafe + ".jpg";
-                    Bitmap save = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
-                    save.Save(dir + "/" + saveName);
-
-                    cPrint(Color.DarkGreen, thridAsText + "Wrote " + new FileInfo(dir + "/" + saveName).Length + " bytes to disk");
 
                     if (useOutDir)
                     {
@@ -236,8 +232,12 @@ namespace KDownloader_Recoded
                     subPBfour.Image = shiftReg[4].img;
                     subPBfive.Image = shiftReg[5].img;
                     subPBsix.Image = shiftReg[6].img;
-                    
-                    if(shiftReg.Count > 8)
+
+                    Bitmap save = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
+                    save.Save(dir + "/" + saveName);
+                    cPrint(Color.DarkGreen, thridAsText + "Wrote " + new FileInfo(dir + "/" + saveName).Length + " bytes to disk");
+
+                    if (shiftReg.Count > 8)
                     {
                         shiftReg.RemoveRange(8, shiftReg.Count - 8);
                     }
