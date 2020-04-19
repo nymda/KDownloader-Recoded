@@ -22,9 +22,10 @@ namespace KDownloader_Recoded
         public debugLog frmDebug;
         public bool console = false;
         public bool killSwitch = false;
-        public bool catchFirstClose = true;
+        public bool lockClosure = true;
         public int deadThreads = 0;
 
+        public bool ipTag = true;
         public Random rnd = new Random();
         public int threadCount;
         public List<String> ipAddrs = new List<String> { };
@@ -38,24 +39,11 @@ namespace KDownloader_Recoded
         public Font luc = new Font("Lucida Console", 15);
         public int remoteSaveCounter = 0;
         public int remoteTestcounter = 0;
-        
-        public Bitmap sr0;
-        public Bitmap sr1;
-        public Bitmap sr2;
-        public Bitmap sr3;
-        public Bitmap sr4;
-        public Bitmap sr5;
-        public Bitmap sr6;
 
-        public string sr0_name = "";
-        public string sr1_name = "";
-        public string sr2_name = "";
-        public string sr3_name = "";
-        public string sr4_name = "";
-        public string sr5_name = "";
-        public string sr6_name = "";
+        public List<Thread> dlThreads = new List<Thread> { };
+        public List<shiftItem> shiftReg = new List<shiftItem> { };
 
-        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing, bool console)
+        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing, bool console, bool ipTag)
         {
             InitializeComponent();
             this.showing = showing;
@@ -64,6 +52,7 @@ namespace KDownloader_Recoded
             this.imgdir = imgdir;
             this.outdir = outdir;
             this.console = console;
+            this.ipTag = ipTag;
             ipAddrs = ips;
         }
 
@@ -97,6 +86,7 @@ namespace KDownloader_Recoded
             BarMain.Maximum = ipaCount;
             showing.Hide();
             cPrint(Color.Green, "[M] Started viewer");
+            frmDebug.setPosition((this.Left - frmDebug.Width + 10), this.Top, frmDebug.Width, this.Height);
         }
 
         public void seperateAndSpawnThreads()
@@ -127,20 +117,21 @@ namespace KDownloader_Recoded
             for (int i = 1; i < threadCount; i++)
             {
                 sanity += seperatedIpList[i].Count();
-                Thread testing = new Thread(() => mainTestThread(i, seperatedIpList[i], setCamData, imgdir));
+                Thread testing = new Thread(() => mainTestThread(i, seperatedIpList[i], setCamData, imgdir, ipTag));
                 testing.IsBackground = true;
                 testing.Start();
+                testing.Name = "[" + i.ToString() + "]";
+                dlThreads.Add(testing);
                 Thread.Sleep(500);
             }
 
             if(sanity == ipAddrs.Count())
             {
-                Console.WriteLine("IP CHECK OK!");
+                cPrint(Color.DarkGreen, "[M] IP CHECK OK!");
             }
-
         }
 
-        public void mainTestThread(int thrid, List<String> ips, camData cdat, string dir)
+        public void mainTestThread(int thrid, List<String> ips, camData cdat, string dir, bool DoIpTag)
         {
             string thridAsText = "[" + thrid + "] ";
 
@@ -149,15 +140,14 @@ namespace KDownloader_Recoded
             List<String> goodIps = new List<String> { };
             TimeWebClient wc = new TimeWebClient();
             wc.Credentials = cdat.Creds;
-            Console.WriteLine("thread spawned: " + thrid + " with " + ips.Count + " ips ");
 
             foreach(string ip in ips)
             {
                 //if the viewer form doesnt exist, exit the thread#
                 if (killSwitch)
                 {
-                    cPrint(Color.Red, thridAsText + "Killswitch given! Killing myself!");
-                    break;
+                    //cPrint(Color.Red, thridAsText + "Close given! Killing myself!");
+                    //break;
                 }
                 if (!this.IsHandleCreated)
                 {
@@ -191,7 +181,6 @@ namespace KDownloader_Recoded
                     }
                     g = Graphics.FromImage(bmp);
 
-                    //entire chunk of mess for drawing the ip thing
                     String combinedCredsPT = cdat.Creds.UserName + " : " + cdat.Creds.Password;
                     SizeF sizeOfIp = g.MeasureString(intIp, luc);
                     SizeF sizeOfCreds = g.MeasureString(combinedCredsPT, luc);
@@ -207,32 +196,28 @@ namespace KDownloader_Recoded
                     }
                     totalheight += 3;
                     largerWidth += 3;
-                    g.FillRectangle(Brushes.Beige, 2, 2, largerWidth + 7, totalheight + 7);
-                    g.FillRectangle(Brushes.Black, 5, 5, largerWidth, totalheight);
-                    g.DrawString(intIp, luc, Brushes.White, new Point(6, 7));
-                    g.DrawString(combinedCredsPT, luc, Brushes.White, new Point(5, 8 + (int)sizeOfIp.Height));
 
-                    sr6 = sr5;
-                    sr5 = sr4;
-                    sr4 = sr3;
-                    sr3 = sr2;
-                    sr2 = sr1;
-                    sr1 = sr0;
-                    sr0 = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
-
-                    mainPB.Image = sr0;
-                    subPBone.Image = sr1;
-                    subPBtwo.Image = sr2;
-                    subPBthree.Image = sr3;
-                    subPBfour.Image = sr4;
-                    subPBfive.Image = sr5;
-                    subPBsix.Image = sr6;
+                    if (DoIpTag)
+                    {
+                        g.FillRectangle(Brushes.Beige, 2, 2, largerWidth + 7, totalheight + 7);
+                        g.FillRectangle(Brushes.Black, 5, 5, largerWidth, totalheight);
+                        g.DrawString(intIp, luc, Brushes.White, new Point(6, 7));
+                        g.DrawString(combinedCredsPT, luc, Brushes.White, new Point(5, 8 + (int)sizeOfIp.Height));
+                    }
+                    else
+                    {
+                        //not using the graphics object causes System.Runtime.InteropServices.ExternalException
+                        g.FillRectangle(Brushes.Black, -1, -1, 1, 1);
+                    }
 
                     remoteSaveCounter++;
                     workingIps.Add(ip);
                     int rscLen = remoteSaveCounter.ToString().Length;
 
-                    string saveName = RandomString(5) + "_" + RandomString(10) + ".jpg";
+                    string ipSafe = ip.Replace(".", "-");
+                    ipSafe = ipSafe.Replace(":", "-");
+
+                    string saveName = RandomString(5) + "-" + ipSafe + ".jpg";
                     Bitmap save = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
                     save.Save(dir + "/" + saveName);
 
@@ -243,13 +228,19 @@ namespace KDownloader_Recoded
                         File.WriteAllLines(outdir, workingIps);
                     }
 
-                    sr6_name = sr5_name;
-                    sr5_name = sr4_name;
-                    sr4_name = sr3_name;
-                    sr3_name = sr2_name;
-                    sr2_name = sr1_name;
-                    sr1_name = sr0_name;
-                    sr0_name = saveName;
+                    shiftReg.Insert(0, new shiftItem(bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare), saveName));
+                    mainPB.Image = shiftReg[0].img;
+                    subPBone.Image = shiftReg[1].img;
+                    subPBtwo.Image = shiftReg[2].img;
+                    subPBthree.Image = shiftReg[3].img;
+                    subPBfour.Image = shiftReg[4].img;
+                    subPBfive.Image = shiftReg[5].img;
+                    subPBsix.Image = shiftReg[6].img;
+                    
+                    if(shiftReg.Count > 8)
+                    {
+                        shiftReg.RemoveRange(8, shiftReg.Count - 8);
+                    }
 
                     save.Dispose();
                     bmp.Dispose();
@@ -277,7 +268,11 @@ namespace KDownloader_Recoded
                 }
                 catch
                 {
-                    cPrint(Color.Red, thridAsText + ip + " | Internal error");
+                    //sometimes ThreadAbortException is thrown when killing threads, dont show any errors after killswitch is triggered.
+                    if (!killSwitch)
+                    {
+                        cPrint(Color.Red, thridAsText + ip + " | Internal error");
+                    }
                 }
             }
             deadThreads++;
@@ -290,21 +285,20 @@ namespace KDownloader_Recoded
             Graphics tg = Graphics.FromImage(tm);
             tg.DrawRectangle(Pens.Black, -2, -2, -1, -1);
 
-            sr0 = tm;
-            sr1 = tm;
-            sr2 = tm;
-            sr3 = tm;
-            sr4 = tm;
-            sr5 = tm;
-            sr6 = tm;
+            shiftItem sf = new shiftItem(tm, "");
 
-            mainPB.Image = sr0;
-            subPBone.Image = sr1;
-            subPBtwo.Image = sr2;
-            subPBthree.Image = sr3;
-            subPBfour.Image = sr4;
-            subPBfive.Image = sr5;
-            subPBsix.Image = sr6;
+            for(int i = 0; i < 7; i++)
+            {
+                shiftReg.Add(sf);
+            }
+
+            mainPB.Image = shiftReg[0].img;
+            subPBone.Image = shiftReg[1].img;
+            subPBtwo.Image = shiftReg[2].img;
+            subPBthree.Image = shiftReg[3].img;
+            subPBfour.Image = shiftReg[4].img;
+            subPBfive.Image = shiftReg[5].img;
+            subPBsix.Image = shiftReg[6].img;
         }
 
         public string RandomString(int length)
@@ -325,78 +319,129 @@ namespace KDownloader_Recoded
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if (catchFirstClose)
+            if (lockClosure)
             {
                 e.Cancel = true;
             }
-            cPrint(Color.Red, "[M] Close command given. Killing children and exiting.");
-            killSwitch = true;
-            killswitchTimer.Start();
+            if (killSwitch)
+            {
+                cPrint(Color.Red, "[M] Wait for threads to terminate!");
+            }
+            else
+            {
+                cPrint(Color.Red, "[M] Close command given.");
+                killSwitch = true;
+                foreach (Thread t in dlThreads)
+                {
+                    deadThreads++;
+                    t.Abort();
+                    cPrint(Color.Red, "[M] Thread killed: " + t.Name);
+                }
+                killswitchTimer.Start();
+            }
         }
 
         private void mainPB_Click(object sender, EventArgs e)
         {
-            if(sr0_name != "") {
-                Process.Start(imgdir + "/" + sr0_name);
+            if(shiftReg[0].name != "") {
+                Process.Start(imgdir + "/" + shiftReg[0].name);
             }
         }
 
         private void subPBone_Click(object sender, EventArgs e)
         {
-            if (sr1_name != "")
+            if (shiftReg[1].name != "")
             {
-                Process.Start(imgdir + "/" + sr1_name);
+                Process.Start(imgdir + "/" + shiftReg[1].name);
             }
         }
 
         private void subPBtwo_Click(object sender, EventArgs e)
         {
-            if (sr2_name != "")
+            if (shiftReg[2].name != "")
             {
-                Process.Start(imgdir + "/" + sr2_name);
+                Process.Start(imgdir + "/" + shiftReg[2].name);
             }
         }
 
         private void subPBthree_Click(object sender, EventArgs e)
         {
-            if (sr3_name != "")
+            if (shiftReg[3].name != "")
             {
-                Process.Start(imgdir + "/" + sr3_name);
+                Process.Start(imgdir + "/" + shiftReg[3].name);
             }
         }
 
         private void subPBfour_Click(object sender, EventArgs e)
         {
-            if (sr4_name != "")
+            if (shiftReg[4].name != "")
             {
-                Process.Start(imgdir + "/" + sr4_name);
+                Process.Start(imgdir + "/" + shiftReg[4].name);
             }
         }
 
         private void subPBfive_Click(object sender, EventArgs e)
         {
-            if (sr5_name != "")
+            if (shiftReg[5].name != "")
             {
-                Process.Start(imgdir + "/" + sr5_name);
+                Process.Start(imgdir + "/" + shiftReg[5].name);
             }
         }
 
         private void subPBsix_Click(object sender, EventArgs e)
         {
-            if (sr6_name != "")
+            if (shiftReg[6].name != "")
             {
-                Process.Start(imgdir + "/" + sr6_name);
+                Process.Start(imgdir + "/" + shiftReg[6].name);
             }
         }
 
         private void killswitchTimer_Tick(object sender, EventArgs e)
         {
-            catchFirstClose = false;
-
             if((deadThreads + 1) >= threadCount)
             {
+                lockClosure = false;
                 frmDebug.Hide();
                 this.DialogResult = DialogResult.OK;
+            }
+        }
+
+        private void Viewer_moved(object sender, EventArgs e)
+        {
+            if (console && frmDebug != null && CbDockConsole.Checked)
+            {
+                frmDebug.setPosition((this.Left - frmDebug.Width + 10), this.Top, frmDebug.Width, this.Height);
+            }
+        }
+
+        private void Viewer_resized(object sender, EventArgs e)
+        {
+            if (console && frmDebug != null && CbDockConsole.Checked)
+            {
+                frmDebug.setPosition((this.Left - frmDebug.Width + 10), this.Top, frmDebug.Width, this.Height);
+            }
+        }
+
+        private void viewer_focus(object sender, EventArgs e)
+        {
+            bringConsoleToFront.Start();
+        }
+
+        private void bringConsoleToFront_Tick(object sender, EventArgs e)
+        {
+            if (Form.ActiveForm == this)
+            {
+                frmDebug.Focus();
+                this.Focus();
+            }
+            bringConsoleToFront.Stop();
+        }
+
+        private void CbDockConsole_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CbDockConsole.Checked)
+            {
+                frmDebug.setPosition((this.Left - frmDebug.Width + 10), this.Top, frmDebug.Width, this.Height);
             }
         }
     }

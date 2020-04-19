@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(debugLog));
             this.dbgList = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
@@ -55,6 +56,7 @@
             this.ClientSize = new System.Drawing.Size(340, 595);
             this.Controls.Add(this.dbgList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "debugLog";
             this.Text = "Output";
             this.Load += new System.EventHandler(this.debugLog_Load);

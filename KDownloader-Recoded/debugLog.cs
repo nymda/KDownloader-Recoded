@@ -47,5 +47,13 @@ namespace KDownloader_Recoded
 
             }
         }
+
+        public void setPosition(int x, int y, int width, int height)
+        {
+            this.Top = y;
+            this.Left = x;
+            this.Width = width;
+            this.Height = height;
+        }
     }
 }

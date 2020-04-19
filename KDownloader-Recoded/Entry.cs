@@ -142,7 +142,7 @@ namespace KDownloader_Recoded
                 ipAddrs = ipAddrs.OrderBy(x => GetNextInt32(rnd2)).ToList();
             }
 
-            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading, CBthreadDebug.Checked)){
+            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading, CBthreadDebug.Checked, CbIpTag.Checked)){
                 var res = form.ShowDialog();
                 if (res == DialogResult.OK) {
                     this.Show();

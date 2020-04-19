@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(viewer));
             this.mainPB = new System.Windows.Forms.PictureBox();
             this.subPBone = new System.Windows.Forms.PictureBox();
             this.subPBtwo = new System.Windows.Forms.PictureBox();
@@ -38,6 +39,8 @@
             this.subPBfive = new System.Windows.Forms.PictureBox();
             this.subPBsix = new System.Windows.Forms.PictureBox();
             this.killswitchTimer = new System.Windows.Forms.Timer(this.components);
+            this.CbDockConsole = new System.Windows.Forms.CheckBox();
+            this.bringConsoleToFront = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.mainPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBtwo)).BeginInit();
@@ -115,7 +118,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BarMain.Location = new System.Drawing.Point(12, 558);
             this.BarMain.Name = "BarMain";
-            this.BarMain.Size = new System.Drawing.Size(1126, 23);
+            this.BarMain.Size = new System.Drawing.Size(960, 23);
             this.BarMain.TabIndex = 5;
             // 
             // subPBfive
@@ -147,11 +150,31 @@
             this.killswitchTimer.Interval = 500;
             this.killswitchTimer.Tick += new System.EventHandler(this.killswitchTimer_Tick);
             // 
+            // CbDockConsole
+            // 
+            this.CbDockConsole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CbDockConsole.AutoSize = true;
+            this.CbDockConsole.Checked = true;
+            this.CbDockConsole.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CbDockConsole.Location = new System.Drawing.Point(978, 558);
+            this.CbDockConsole.Name = "CbDockConsole";
+            this.CbDockConsole.Size = new System.Drawing.Size(124, 17);
+            this.CbDockConsole.TabIndex = 9;
+            this.CbDockConsole.Text = "Dock output window";
+            this.CbDockConsole.UseVisualStyleBackColor = true;
+            this.CbDockConsole.CheckedChanged += new System.EventHandler(this.CbDockConsole_CheckedChanged);
+            // 
+            // bringConsoleToFront
+            // 
+            this.bringConsoleToFront.Tick += new System.EventHandler(this.bringConsoleToFront_Tick);
+            // 
             // viewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1156, 595);
+            this.Controls.Add(this.CbDockConsole);
             this.Controls.Add(this.subPBsix);
             this.Controls.Add(this.subPBfive);
             this.Controls.Add(this.BarMain);
@@ -160,9 +183,13 @@
             this.Controls.Add(this.subPBtwo);
             this.Controls.Add(this.subPBone);
             this.Controls.Add(this.mainPB);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "viewer";
             this.Text = "Viewer | Progress: 0/0";
+            this.Activated += new System.EventHandler(this.viewer_focus);
             this.Load += new System.EventHandler(this.viewer_Load);
+            this.Move += new System.EventHandler(this.Viewer_moved);
+            this.Resize += new System.EventHandler(this.Viewer_resized);
             ((System.ComponentModel.ISupportInitialize)(this.mainPB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBtwo)).EndInit();
@@ -171,6 +198,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.subPBfive)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBsix)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -185,5 +213,7 @@
         private System.Windows.Forms.PictureBox subPBfive;
         private System.Windows.Forms.PictureBox subPBsix;
         private System.Windows.Forms.Timer killswitchTimer;
+        private System.Windows.Forms.CheckBox CbDockConsole;
+        private System.Windows.Forms.Timer bringConsoleToFront;
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(viewCdatValues));
             this.rtbView = new System.Windows.Forms.RichTextBox();
             this.btnDeleteCdat = new System.Windows.Forms.Button();
             this.cbConfirmDelete = new System.Windows.Forms.CheckBox();
@@ -78,6 +79,7 @@
             this.Controls.Add(this.btnDeleteCdat);
             this.Controls.Add(this.rtbView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "viewCdatValues";
             this.Text = "Data view";
             this.Load += new System.EventHandler(this.viewCdatValues_Load);

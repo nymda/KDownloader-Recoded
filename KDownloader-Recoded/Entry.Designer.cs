@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Entry));
             this.inputSelect = new System.Windows.Forms.Button();
             this.outputSelect = new System.Windows.Forms.Button();
             this.folderSelect = new System.Windows.Forms.Button();
             this.GBfiles = new System.Windows.Forms.GroupBox();
             this.LBcount = new System.Windows.Forms.Label();
             this.GBdata = new System.Windows.Forms.GroupBox();
+            this.CbIpTag = new System.Windows.Forms.CheckBox();
             this.ESTlabel = new System.Windows.Forms.Label();
             this.CBrandOrd = new System.Windows.Forms.CheckBox();
             this.GBthreads = new System.Windows.Forms.GroupBox();
@@ -105,15 +107,28 @@
             // 
             // GBdata
             // 
+            this.GBdata.Controls.Add(this.CbIpTag);
             this.GBdata.Controls.Add(this.ESTlabel);
             this.GBdata.Controls.Add(this.CBrandOrd);
             this.GBdata.Controls.Add(this.LBcount);
             this.GBdata.Location = new System.Drawing.Point(12, 125);
             this.GBdata.Name = "GBdata";
-            this.GBdata.Size = new System.Drawing.Size(142, 75);
+            this.GBdata.Size = new System.Drawing.Size(142, 94);
             this.GBdata.TabIndex = 4;
             this.GBdata.TabStop = false;
             this.GBdata.Text = "Data";
+            // 
+            // CbIpTag
+            // 
+            this.CbIpTag.AutoSize = true;
+            this.CbIpTag.Checked = true;
+            this.CbIpTag.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CbIpTag.Location = new System.Drawing.Point(9, 71);
+            this.CbIpTag.Name = "CbIpTag";
+            this.CbIpTag.Size = new System.Drawing.Size(90, 17);
+            this.CbIpTag.TabIndex = 6;
+            this.CbIpTag.Text = "IP tag images";
+            this.CbIpTag.UseVisualStyleBackColor = true;
             // 
             // ESTlabel
             // 
@@ -139,7 +154,7 @@
             this.GBthreads.Controls.Add(this.CBthreadDebug);
             this.GBthreads.Controls.Add(this.LBthreads);
             this.GBthreads.Controls.Add(this.NUDthreads);
-            this.GBthreads.Location = new System.Drawing.Point(12, 206);
+            this.GBthreads.Location = new System.Drawing.Point(12, 225);
             this.GBthreads.Name = "GBthreads";
             this.GBthreads.Size = new System.Drawing.Size(142, 68);
             this.GBthreads.TabIndex = 5;
@@ -149,6 +164,8 @@
             // CBthreadDebug
             // 
             this.CBthreadDebug.AutoSize = true;
+            this.CBthreadDebug.Checked = true;
+            this.CBthreadDebug.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CBthreadDebug.Location = new System.Drawing.Point(9, 45);
             this.CBthreadDebug.Name = "CBthreadDebug";
             this.CBthreadDebug.Size = new System.Drawing.Size(86, 17);
@@ -191,14 +208,14 @@
             this.GBcamBrand.Controls.Add(this.CDATselect);
             this.GBcamBrand.Location = new System.Drawing.Point(160, 12);
             this.GBcamBrand.Name = "GBcamBrand";
-            this.GBcamBrand.Size = new System.Drawing.Size(200, 262);
+            this.GBcamBrand.Size = new System.Drawing.Size(200, 281);
             this.GBcamBrand.TabIndex = 6;
             this.GBcamBrand.TabStop = false;
             this.GBcamBrand.Text = "Camera brand";
             // 
             // btnViewCdat
             // 
-            this.btnViewCdat.Location = new System.Drawing.Point(6, 233);
+            this.btnViewCdat.Location = new System.Drawing.Point(6, 252);
             this.btnViewCdat.Name = "btnViewCdat";
             this.btnViewCdat.Size = new System.Drawing.Size(43, 23);
             this.btnViewCdat.TabIndex = 2;
@@ -208,7 +225,7 @@
             // 
             // addCamera
             // 
-            this.addCamera.Location = new System.Drawing.Point(55, 233);
+            this.addCamera.Location = new System.Drawing.Point(55, 252);
             this.addCamera.Name = "addCamera";
             this.addCamera.Size = new System.Drawing.Size(139, 23);
             this.addCamera.TabIndex = 1;
@@ -222,13 +239,13 @@
             this.CDATselect.IntegralHeight = false;
             this.CDATselect.Location = new System.Drawing.Point(6, 19);
             this.CDATselect.Name = "CDATselect";
-            this.CDATselect.Size = new System.Drawing.Size(188, 209);
+            this.CDATselect.Size = new System.Drawing.Size(188, 227);
             this.CDATselect.TabIndex = 0;
             this.CDATselect.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CDATselect_ItemCheck);
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 280);
+            this.btnStart.Location = new System.Drawing.Point(12, 299);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(348, 23);
             this.btnStart.TabIndex = 7;
@@ -240,13 +257,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(370, 314);
+            this.ClientSize = new System.Drawing.Size(370, 329);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.GBcamBrand);
             this.Controls.Add(this.GBthreads);
             this.Controls.Add(this.GBdata);
             this.Controls.Add(this.GBfiles);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Entry";
             this.Text = "Setup";
@@ -281,6 +299,7 @@
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnViewCdat;
         public System.Windows.Forms.CheckedListBox CDATselect;
+        private System.Windows.Forms.CheckBox CbIpTag;
     }
 }
 
