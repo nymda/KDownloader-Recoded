@@ -65,6 +65,18 @@
     <Compile Include="Entry.Designer.cs">
       <DependentUpon>Entry.cs</DependentUpon>
     </Compile>
+    <Compile Include="exploits.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="exploits.Designer.cs">
+      <DependentUpon>exploits.cs</DependentUpon>
+    </Compile>
+    <Compile Include="kcore.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="kcore.Designer.cs">
+      <DependentUpon>kcore.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="spawningThreadMsg.cs">
@@ -94,6 +106,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Entry.resx">
       <DependentUpon>Entry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="exploits.resx">
+      <DependentUpon>exploits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="kcore.resx">
+      <DependentUpon>kcore.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

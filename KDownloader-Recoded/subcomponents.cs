@@ -67,4 +67,24 @@ namespace KDownloader_Recoded
             name = null;
         }
     }
+
+    public class TimeWebClient : WebClient
+    {
+        protected override WebRequest GetWebRequest(Uri address)
+        {
+            var req = base.GetWebRequest(address);
+            req.Timeout = 5000;
+            return req;
+        }
+    }
+
+    public class rndFuncs
+    {
+        public string RandomString(int length)
+        {
+            Random rnd = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length).Select(s => s[rnd.Next(s.Length)]).ToArray());
+        }
+    }
 }

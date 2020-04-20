@@ -172,7 +172,6 @@
             this.CBthreadDebug.TabIndex = 8;
             this.CBthreadDebug.Text = "Show debug";
             this.CBthreadDebug.UseVisualStyleBackColor = true;
-            this.CBthreadDebug.CheckedChanged += new System.EventHandler(this.CBthreadDebug_CheckedChanged);
             // 
             // LBthreads
             // 
@@ -268,8 +267,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Entry";
-            this.Text = "Setup";
+            this.Text = "Setup | [E] Exploit kit | [A] About";
             this.Load += new System.EventHandler(this.Entry_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ent_keyPress);
             this.GBfiles.ResumeLayout(false);
             this.GBdata.ResumeLayout(false);
             this.GBdata.PerformLayout();

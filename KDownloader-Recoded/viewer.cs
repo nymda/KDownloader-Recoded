@@ -307,16 +307,6 @@ namespace KDownloader_Recoded
             return new string(Enumerable.Repeat(chars, length).Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
 
-        public class TimeWebClient : WebClient
-        {
-            protected override WebRequest GetWebRequest(Uri address)
-            {
-                var req = base.GetWebRequest(address);
-                req.Timeout = 2500;
-                return req;
-            }
-        }
-
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             if (lockClosure)

@@ -22,7 +22,7 @@ namespace KDownloader_Recoded
         }
 
         public camData foscam = new camData("/snapshot.cgi", "foscam", new NetworkCredential("admin", ""), true);
-        public camData sineoji = new camData("/tmpfs/auto.jpg", "sineoji", new NetworkCredential("user", "user"), true);
+        public camData sineoji = new camData("/tmpfs/snap.jpg", "sineoji", new NetworkCredential("user", "user"), true);
 
         public string confFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/kdl/brands.conf";
         public string confDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/kdl/";
@@ -86,7 +86,7 @@ namespace KDownloader_Recoded
                     {
                         btnStart.Enabled = true;
                     }
-                    ipAddrs = System.IO.File.ReadAllLines(dlg.FileName).ToList();
+                    ipAddrs = File.ReadAllLines(dlg.FileName).ToList();
                     ipCount = ipAddrs.Count();
                     LBcount.Text = "IP count: " + ipCount;
                     inputSelect.ForeColor = System.Drawing.Color.DarkGreen;
@@ -155,10 +155,6 @@ namespace KDownloader_Recoded
                     this.Show();
                 }
             }
-
-            btnStart.Text = "Start";
-            //viewer v = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs);
-            //v.Show();
         }
 
         private void outputSelect_Click(object sender, EventArgs e)
@@ -202,11 +198,6 @@ namespace KDownloader_Recoded
             return Convert.ToInt32(randomInt[0]);
         }
 
-        private void CBthreadDebug_CheckedChanged(object sender, EventArgs e)
-        {
-            //todo
-        }
-
         private void addCamera_Click(object sender, EventArgs e)
         {
             using (var form = new addCamBrand())
@@ -218,6 +209,14 @@ namespace KDownloader_Recoded
                     pubDataList.Clear();
                     readCamConf();
                 }
+            }
+        }
+
+        private void ent_keyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == (char)Keys.E)
+            {
+
             }
         }
     }
