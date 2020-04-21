@@ -32,6 +32,9 @@ namespace KDownloader_Recoded
         public string macAddr = "";
         public string username = "";
         public string password = "";
+        public string[] rawSplit;
+        public int extCount = 0;
+        public int curOffset = 3;
         private void btn_attack_Click(object sender, EventArgs e)
         {
             ipAddr = tb_ipaddr.Text;
@@ -103,11 +106,10 @@ namespace KDownloader_Recoded
             }
 
             string raw = Encoding.UTF8.GetString(buffer.ToArray());
-            string[] rawSplit = raw.Split((char)0x00);
+            rawSplit = raw.Split((char)0x00);
 
             List<String> possibleMacAddress = new List<String> { };
 
-            int extCount = 0;
             foreach(string s in rawSplit)
             {
                 if(s == macAddr)
@@ -130,6 +132,7 @@ namespace KDownloader_Recoded
         {
             print(Color.Green, "PASSWORD: " + password);
             print(Color.Green, "USERNAME: " + username);
+            print(Color.DarkRed, "Not working? Press [M]");
         }
 
         public void getMacAddr()
@@ -188,6 +191,38 @@ namespace KDownloader_Recoded
             {
                 lb_console.Items.Insert(0, new colourItem(c, text));
             }));
+        }
+
+        private void kcore_kp(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == 'm')
+            {
+                if(rawSplit.Length != 0)
+                {
+                    List<String> strDump = new List<String> { };
+                    if((rawSplit.Length - extCount) > 15)
+                    {
+                        for(int i = 0; i < 15; i++)
+                        {
+                            strDump.Add(i + " " + rawSplit[extCount + i]);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < (rawSplit.Length - extCount) ; i++)
+                        {
+                            strDump.Add(i + " " + rawSplit[extCount + i]);
+                        }
+                    }
+                    strDump.Reverse();
+                    strDump.Add("==STRING DUMP===");
+
+                    foreach (String s in strDump)
+                    {
+                        print(Color.Black, s);
+                    }
+                }
+            }
         }
     }
 }
