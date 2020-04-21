@@ -265,11 +265,12 @@
             this.Controls.Add(this.GBfiles);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "Entry";
             this.Text = "Setup | [E] Exploit kit | [A] About";
             this.Load += new System.EventHandler(this.Entry_Load);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ent_keyPress);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ent_keyDown);
             this.GBfiles.ResumeLayout(false);
             this.GBdata.ResumeLayout(false);
             this.GBdata.PerformLayout();

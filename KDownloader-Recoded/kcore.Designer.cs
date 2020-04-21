@@ -37,6 +37,8 @@
             // 
             // tb_ipaddr
             // 
+            this.tb_ipaddr.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_ipaddr.Location = new System.Drawing.Point(79, 6);
             this.tb_ipaddr.Name = "tb_ipaddr";
             this.tb_ipaddr.Size = new System.Drawing.Size(265, 20);
@@ -53,6 +55,8 @@
             // 
             // btn_attack
             // 
+            this.btn_attack.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_attack.Location = new System.Drawing.Point(15, 32);
             this.btn_attack.Name = "btn_attack";
             this.btn_attack.Size = new System.Drawing.Size(329, 23);
@@ -63,7 +67,11 @@
             // 
             // lb_console
             // 
+            this.lb_console.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_console.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lb_console.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lb_console.FormattingEnabled = true;
             this.lb_console.Location = new System.Drawing.Point(15, 61);
             this.lb_console.Name = "lb_console";
@@ -82,7 +90,7 @@
             this.Controls.Add(this.tb_ipaddr);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "kcore";
-            this.Text = "//proj/kcore | Foscam / Netwave";
+            this.Text = "//proc/kcore | Foscam / Netwave";
             this.Load += new System.EventHandler(this.kcore_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

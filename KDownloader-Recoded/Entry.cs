@@ -212,11 +212,17 @@ namespace KDownloader_Recoded
             }
         }
 
-        private void ent_keyPress(object sender, KeyPressEventArgs e)
+        private void ent_keyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyChar == (char)Keys.E)
+            if (e.KeyCode == Keys.E)
             {
-
+                exploits ex = new exploits();
+                ex.Show();
+            }
+            if(e.KeyCode == Keys.A)
+            {
+                about a = new about();
+                a.Show();
             }
         }
     }
