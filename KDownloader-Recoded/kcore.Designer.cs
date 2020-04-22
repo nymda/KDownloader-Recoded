@@ -39,16 +39,16 @@
             // 
             this.tb_ipaddr.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_ipaddr.Location = new System.Drawing.Point(118, 9);
+            this.tb_ipaddr.Location = new System.Drawing.Point(109, 9);
             this.tb_ipaddr.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tb_ipaddr.Name = "tb_ipaddr";
-            this.tb_ipaddr.Size = new System.Drawing.Size(396, 27);
+            this.tb_ipaddr.Size = new System.Drawing.Size(423, 27);
             this.tb_ipaddr.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 13);
+            this.label1.Location = new System.Drawing.Point(9, 13);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 19);
@@ -59,10 +59,10 @@
             // 
             this.btn_attack.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_attack.Location = new System.Drawing.Point(22, 47);
+            this.btn_attack.Location = new System.Drawing.Point(13, 47);
             this.btn_attack.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_attack.Name = "btn_attack";
-            this.btn_attack.Size = new System.Drawing.Size(494, 34);
+            this.btn_attack.Size = new System.Drawing.Size(519, 34);
             this.btn_attack.TabIndex = 2;
             this.btn_attack.Text = "Attack";
             this.btn_attack.UseVisualStyleBackColor = true;
@@ -76,10 +76,11 @@
             this.lb_console.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lb_console.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lb_console.FormattingEnabled = true;
-            this.lb_console.Location = new System.Drawing.Point(22, 89);
+            this.lb_console.IntegralHeight = false;
+            this.lb_console.Location = new System.Drawing.Point(13, 89);
             this.lb_console.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lb_console.Name = "lb_console";
-            this.lb_console.Size = new System.Drawing.Size(492, 342);
+            this.lb_console.Size = new System.Drawing.Size(519, 665);
             this.lb_console.TabIndex = 3;
             this.lb_console.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lb_draw);
             // 
@@ -87,7 +88,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(537, 459);
+            this.ClientSize = new System.Drawing.Size(545, 767);
             this.Controls.Add(this.lb_console);
             this.Controls.Add(this.btn_attack);
             this.Controls.Add(this.label1);

