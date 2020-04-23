@@ -134,15 +134,16 @@ namespace KDownloader_Recoded
 
             bool found = false;
             bool hasData = false;
+            List<String> strDump = new List<String> { };
 
-            foreach(string s in rawSplit)
+            foreach (string s in rawSplit)
             {
                 hasData = true;
                 if(s == macAddr)
                 {
                     print(Color.Green, "MAC Found - Testing possible creds");
 
-                    List<String> strDump = new List<String> { };
+
                     if ((rawSplit.Length - extCount) > 15)
                     {
                         for (int i = 0; i < 15; i++)
@@ -179,11 +180,11 @@ namespace KDownloader_Recoded
                 extCount++;
             }
 
-            if (!hasData)
+            if (strDump.Count == 0)
             {
                 print(Color.Red, "No data. Probably patched.");
             }
-            if (!found && hasData)
+            if (!found && (strDump.Count != 0))
             {
                 print(Color.Red, "Search failed. Press [M] to find manually.");
             }
