@@ -133,12 +133,10 @@ namespace KDownloader_Recoded
             List<String> possibleMacAddress = new List<String> { };
 
             bool found = false;
-            bool hasData = false;
             List<String> strDump = new List<String> { };
 
             foreach (string s in rawSplit)
             {
-                hasData = true;
                 if(s == macAddr)
                 {
                     print(Color.Green, "MAC Found - Testing possible creds");

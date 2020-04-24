@@ -50,6 +50,7 @@
             // 
             // rainbow
             // 
+            this.rainbow.Interval = 250;
             this.rainbow.Tick += new System.EventHandler(this.rainbow_Tick);
             // 
             // about
