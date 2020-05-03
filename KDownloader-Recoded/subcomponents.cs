@@ -54,11 +54,12 @@ namespace KDownloader_Recoded
     {
         public Bitmap img { get; set; }
         public string name { get; set; }
-
-        public shiftItem(Bitmap img, string name)
+        public string ipAdr { get; set; }
+        public shiftItem(Bitmap img, string name, string ipAdr)
         {
             this.img = img;
             this.name = name;
+            this.ipAdr = ipAdr;
         }
 
         public void dispose()

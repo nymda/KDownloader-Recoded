@@ -77,6 +77,12 @@
     <Compile Include="exploits.Designer.cs">
       <DependentUpon>exploits.cs</DependentUpon>
     </Compile>
+    <Compile Include="jpgRefresh.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="jpgRefresh.Designer.cs">
+      <DependentUpon>jpgRefresh.cs</DependentUpon>
+    </Compile>
     <Compile Include="kcore.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="exploits.resx">
       <DependentUpon>exploits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="jpgRefresh.resx">
+      <DependentUpon>jpgRefresh.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="kcore.resx">
       <DependentUpon>kcore.cs</DependentUpon>

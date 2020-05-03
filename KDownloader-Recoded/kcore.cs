@@ -283,27 +283,53 @@ namespace KDownloader_Recoded
         {
             if(e.KeyChar == 'm')
             {
+                //messy bullshit, dont care
                 if(rawSplit != null && rawSplit.Length != 0)
                 {
                     List<String> strDump = new List<String> { };
-                    if((rawSplit.Length - extCount) > 15)
+                    List<String> strDumpProcessed = new List<String> { };
+                    int count = 0;
+
+                    if ((rawSplit.Length - extCount) > 15)
                     {
-                        for(int i = 0; i < 15; i++)
+                        for (int i = 0; i < 15; i++)
                         {
+                            count++;
                             strDump.Add(i + " " + rawSplit[extCount + i]);
                         }
                     }
                     else
                     {
-                        for (int i = 0; i < (rawSplit.Length - extCount) ; i++)
+                        for (int i = 0; i < (rawSplit.Length - extCount); i++)
                         {
+                            count++;
                             strDump.Add(i + " " + rawSplit[extCount + i]);
                         }
                     }
-                    strDump.Reverse();
-                    strDump.Add("==STRING DUMP===");
 
-                    foreach (String s in strDump)
+                    int longest = 0;
+                    foreach(string s in strDump)
+                    {
+                        if(s.Length > longest)
+                        {
+                            longest = s.Length;
+                        }
+                    }
+
+                    for(int i = 0; i < count; i++)
+                    {
+                        string itm = rawSplit[extCount + i];
+
+                        StringBuilder sb = new StringBuilder(itm);
+                        sb.Insert(0, ".", (longest - itm.Length));
+
+                        strDumpProcessed.Add(i + " " + sb.ToString());
+                    }
+
+                    strDumpProcessed.Reverse();
+                    strDumpProcessed.Add("===STRING DUMP===");
+
+                    foreach (String s in strDumpProcessed)
                     {
                         print(Color.Black, s);
                     }

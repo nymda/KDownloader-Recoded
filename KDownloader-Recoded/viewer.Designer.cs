@@ -41,6 +41,7 @@
             this.killswitchTimer = new System.Windows.Forms.Timer(this.components);
             this.CbDockConsole = new System.Windows.Forms.CheckBox();
             this.bringConsoleToFront = new System.Windows.Forms.Timer(this.components);
+            this.liveViewLoad = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.mainPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.subPBtwo)).BeginInit();
@@ -118,7 +119,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BarMain.Location = new System.Drawing.Point(12, 558);
             this.BarMain.Name = "BarMain";
-            this.BarMain.Size = new System.Drawing.Size(960, 23);
+            this.BarMain.Size = new System.Drawing.Size(856, 23);
             this.BarMain.TabIndex = 5;
             // 
             // subPBfive
@@ -169,11 +170,23 @@
             // 
             this.bringConsoleToFront.Tick += new System.EventHandler(this.bringConsoleToFront_Tick);
             // 
+            // liveViewLoad
+            // 
+            this.liveViewLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.liveViewLoad.Location = new System.Drawing.Point(874, 558);
+            this.liveViewLoad.Name = "liveViewLoad";
+            this.liveViewLoad.Size = new System.Drawing.Size(98, 23);
+            this.liveViewLoad.TabIndex = 10;
+            this.liveViewLoad.Text = "Live view";
+            this.liveViewLoad.UseVisualStyleBackColor = true;
+            this.liveViewLoad.Click += new System.EventHandler(this.lvl_Click);
+            // 
             // viewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1156, 595);
+            this.Controls.Add(this.liveViewLoad);
             this.Controls.Add(this.CbDockConsole);
             this.Controls.Add(this.subPBsix);
             this.Controls.Add(this.subPBfive);
@@ -215,5 +228,6 @@
         private System.Windows.Forms.Timer killswitchTimer;
         private System.Windows.Forms.CheckBox CbDockConsole;
         private System.Windows.Forms.Timer bringConsoleToFront;
+        private System.Windows.Forms.Button liveViewLoad;
     }
 }

@@ -224,7 +224,7 @@ namespace KDownloader_Recoded
                         File.WriteAllLines(outdir, workingIps);
                     }
 
-                    shiftReg.Insert(0, new shiftItem(bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare), saveName));
+                    shiftReg.Insert(0, new shiftItem(bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare), saveName, intIp));
                     mainPB.Image = shiftReg[0].img;
                     subPBone.Image = shiftReg[1].img;
                     subPBtwo.Image = shiftReg[2].img;
@@ -285,7 +285,7 @@ namespace KDownloader_Recoded
             Graphics tg = Graphics.FromImage(tm);
             tg.DrawRectangle(Pens.Black, -2, -2, -1, -1);
 
-            shiftItem sf = new shiftItem(tm, "");
+            shiftItem sf = new shiftItem(tm, "", "");
 
             for(int i = 0; i < 7; i++)
             {
@@ -432,6 +432,16 @@ namespace KDownloader_Recoded
             if (CbDockConsole.Checked)
             {
                 frmDebug.setPosition((this.Left - frmDebug.Width + 10), this.Top, frmDebug.Width, this.Height);
+            }
+        }
+
+        private void lvl_Click(object sender, EventArgs e)
+        {
+            if(shiftReg[0].ipAdr != "")
+            {
+                Uri seturi = new Uri("http://" + shiftReg[0].ipAdr + setCamData.Path);
+                jpgRefresh jpr = new jpgRefresh(seturi);
+                jpr.Show();
             }
         }
     }
