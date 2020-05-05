@@ -53,6 +53,12 @@
     <Compile Include="about.Designer.cs">
       <DependentUpon>about.cs</DependentUpon>
     </Compile>
+    <Compile Include="accountsReset.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="accountsReset.Designer.cs">
+      <DependentUpon>accountsReset.cs</DependentUpon>
+    </Compile>
     <Compile Include="addCamBrand.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +82,12 @@
     </Compile>
     <Compile Include="exploits.Designer.cs">
       <DependentUpon>exploits.cs</DependentUpon>
+    </Compile>
+    <Compile Include="hikBackdoor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="hikBackdoor.Designer.cs">
+      <DependentUpon>hikBackdoor.cs</DependentUpon>
     </Compile>
     <Compile Include="jpgRefresh.cs">
       <SubType>Form</SubType>
@@ -113,6 +125,9 @@
     <EmbeddedResource Include="about.resx">
       <DependentUpon>about.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="accountsReset.resx">
+      <DependentUpon>accountsReset.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="addCamBrand.resx">
       <DependentUpon>addCamBrand.cs</DependentUpon>
     </EmbeddedResource>
@@ -124,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="exploits.resx">
       <DependentUpon>exploits.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="hikBackdoor.resx">
+      <DependentUpon>hikBackdoor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="jpgRefresh.resx">
       <DependentUpon>jpgRefresh.cs</DependentUpon>
