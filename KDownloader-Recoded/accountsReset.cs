@@ -13,6 +13,9 @@ namespace KDownloader_Recoded
 {
     public partial class accountsReset : Form
     {
+        //thanks bp2008!
+        //implementation by me
+
         public TimeWebClient w = new TimeWebClient();
         public string uri;
         public int newestUID;
@@ -61,7 +64,8 @@ namespace KDownloader_Recoded
             try
             {
                 string[] selectedUser = accListBox.SelectedItem.ToString().Split(':');
-                string rawId = selectedUser[0].Substring(3);
+                string rawId = selectedUser[0].Substring(4);
+                rawId = rawId.Replace(" ", "");
                 string rawName = selectedUser[1].Substring(1);
                 print(Color.Orange, "Setting password for " + rawName);
                 string completedXml = buildXmlData(rawId, rawName, newPwBox.Text);
@@ -96,7 +100,6 @@ namespace KDownloader_Recoded
 
         public string buildXmlData(string uid, string name, string pass)
         {
-            //thanks bp2008!
             string userXml =
             @"<User version=""1.0"" xmlns=""http://www.hikvision.com/ver10/XMLSchema"">
 	            <id>" + uid + @"</id>

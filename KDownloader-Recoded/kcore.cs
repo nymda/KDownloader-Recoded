@@ -22,6 +22,8 @@ namespace KDownloader_Recoded
             InitializeComponent();
         }
 
+        //thanks Joe!
+        //implementation by me
         public string returnNextIp { get; set; }
         public string getNextIp = "";
 
