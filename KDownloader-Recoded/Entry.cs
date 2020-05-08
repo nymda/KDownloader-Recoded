@@ -35,7 +35,7 @@ namespace KDownloader_Recoded
         public camData setCamData;
 
         public aspectRatio setAspectRatio = new aspectRatio(1280, 720);
-        public aspectRatio template169 = new aspectRatio(1920, 1080);
+        public aspectRatio template169 = new aspectRatio(1280, 720);
         public aspectRatio template43 = new aspectRatio(640, 480);
         public aspectRatio setTemplate;
 
@@ -157,7 +157,23 @@ namespace KDownloader_Recoded
                 ipAddrs = ipAddrs.OrderBy(x => GetNextInt32(rnd2)).ToList();
             }
 
-            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading, CBthreadDebug.Checked, cbIpStamp.Checked, setStyle, font)){
+            entryViewerLink enl = new entryViewerLink();
+            enl.threadCount = threadCount;
+            enl.cdat = setCamData;
+            enl.imgdir = saveImgPath;
+            enl.outdir = savePath;
+            enl.ips = ipAddrs;
+            enl.showing = loading;
+            enl.console = CBthreadDebug.Checked;
+            enl.ipTag = cbIpStamp.Checked;
+            enl.style = setStyle;
+            enl.luc = font;
+            enl.normaliseImage = isNormalising;
+            enl.setAR = setAspectRatio;
+            enl.normaliseImage = isNormalising;
+            enl.setAR = setAspectRatio;
+
+            using(var form = new viewer(enl)){
                 var res = form.ShowDialog();
                 if (res == DialogResult.OK) {
                     this.Show();
@@ -295,8 +311,20 @@ namespace KDownloader_Recoded
             rb43.Enabled = cbNormalise.Checked;
             rbCustom.Enabled = cbNormalise.Checked;
             nudWidth.Enabled = cbNormalise.Checked;
-            nudHeight.Enabled = cbNormalise.Checked;
             isNormalising = cbNormalise.Checked;
+
+            if (rb169.Checked || rb43.Checked)
+            {
+                nudHeight.Enabled = false;
+            }
+            else if (!cbNormalise.Checked)
+            {
+                nudHeight.Enabled = false;
+            }
+            else
+            {
+                nudHeight.Enabled = true;
+            }
         }
 
         private void cbIpStamp_CheckedChanged(object sender, EventArgs e)

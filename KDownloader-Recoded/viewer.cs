@@ -23,6 +23,8 @@ namespace KDownloader_Recoded
         public bool console = false;
         public bool killSwitch = false;
         public bool lockClosure = true;
+        public bool normalising = false;
+        public aspectRatio setAR = new aspectRatio(1920, 1080);
         public int deadThreads = 0;
 
         public bool ipTag = true;
@@ -47,19 +49,21 @@ namespace KDownloader_Recoded
 
         public ipStyle style;
 
-        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing, bool console, bool ipTag, ipStyle style, Font luc)
+        public viewer(entryViewerLink enl)
         {
             InitializeComponent();
-            this.showing = showing;
-            this.threadCount = threadCount;
-            this.setCamData = cdat;
-            this.imgdir = imgdir;
-            this.outdir = outdir;
-            this.console = console;
-            this.ipTag = ipTag;
-            this.style = style;
-            this.luc = luc;
-            ipAddrs = ips;
+            this.showing = enl.showing;
+            this.threadCount = enl.threadCount;
+            this.setCamData = enl.cdat;
+            this.imgdir = enl.imgdir;
+            this.outdir = enl.outdir;
+            this.console = enl.console;
+            this.ipTag = enl.ipTag;
+            this.style = enl.style;
+            this.luc = enl.luc;
+            this.normalising = enl.normaliseImage;
+            this.setAR = enl.setAR;
+            this.ipAddrs = enl.ips;
         }
 
         public void cPrint(Color c, string text)
@@ -185,6 +189,15 @@ namespace KDownloader_Recoded
                     {
                         bmp = new Bitmap(ms);
                     }
+
+
+                    if (normalising)
+                    {
+                        Bitmap tmp = new Bitmap(bmp, setAR.width, setAR.height);
+                        bmp = new Bitmap(tmp);
+                        tmp.Dispose();
+                    }
+
                     g = Graphics.FromImage(bmp);
 
                     String combinedCredsPT = cdat.Creds.UserName + " : " + cdat.Creds.Password;

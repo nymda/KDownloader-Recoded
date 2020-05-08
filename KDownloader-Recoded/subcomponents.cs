@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace KDownloader_Recoded
 {
@@ -131,8 +132,8 @@ namespace KDownloader_Recoded
                 g.FillRectangle(Brushes.LightGray, 0, 0, setWidth, setHeight);
                 g.DrawRectangle(FourPxBlack, 2, 2, setWidth - 4, setHeight - 4);
                 g.DrawRectangle(TwoPxLGray, 1, 1, setWidth - 2, setHeight - 2);
-                g.DrawLine(OnePxVDarkGray, 0, 0, 0, setHeight);
                 g.DrawLine(OnePxVDarkGray, 1, 1, 1, setHeight);
+                g.DrawLine(OnePxVDarkGray, 2, 2, 2, setHeight);
                 g.DrawLine(OnePxVDarkGray, 0, setHeight - 1, setWidth - 2, setHeight - 1);
                 g.DrawLine(OnePxVDarkGray, 0, setHeight - 2, setWidth - 3, setHeight - 2);
 
@@ -193,5 +194,21 @@ namespace KDownloader_Recoded
         basic = 1,
         barTop = 2,
         barBottom = 3
+    }
+
+    public class entryViewerLink
+    {
+        public int threadCount { get; set; }
+        public camData cdat { get; set; }
+        public string imgdir { get; set; }
+        public string outdir { get; set; }
+        public List<String> ips { get; set; }
+        public Form showing { get; set; }
+        public bool console { get; set; }
+        public bool ipTag { get; set; }
+        public ipStyle style { get; set; }
+        public Font luc { get; set; }
+        public bool normaliseImage { get; set; }
+        public aspectRatio setAR { get; set; }
     }
 }

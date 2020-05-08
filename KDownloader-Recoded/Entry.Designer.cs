@@ -63,7 +63,7 @@
             this.rbBasic = new System.Windows.Forms.RadioButton();
             this.cbIpStamp = new System.Windows.Forms.CheckBox();
             this.rbBarTop = new System.Windows.Forms.RadioButton();
-            this.cbSaveInfo = new System.Windows.Forms.CheckBox();
+            this.cbCenNames = new System.Windows.Forms.CheckBox();
             this.setFontDialog = new System.Windows.Forms.FontDialog();
             this.GBfiles.SuspendLayout();
             this.GBdata.SuspendLayout();
@@ -130,7 +130,7 @@
             // 
             // GBdata
             // 
-            this.GBdata.Controls.Add(this.cbSaveInfo);
+            this.GBdata.Controls.Add(this.cbCenNames);
             this.GBdata.Controls.Add(this.ESTlabel);
             this.GBdata.Controls.Add(this.CBrandOrd);
             this.GBdata.Controls.Add(this.LBcount);
@@ -285,7 +285,6 @@
             this.groupBox1.Controls.Add(this.rb169);
             this.groupBox1.Controls.Add(this.rb43);
             this.groupBox1.Controls.Add(this.cbNormalise);
-            this.groupBox1.Enabled = false;
             this.groupBox1.Location = new System.Drawing.Point(6, 191);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(188, 113);
@@ -478,16 +477,16 @@
             this.rbBarTop.UseVisualStyleBackColor = true;
             this.rbBarTop.CheckedChanged += new System.EventHandler(this.rbBarTop_CheckedChanged);
             // 
-            // cbSaveInfo
+            // cbCenNames
             // 
-            this.cbSaveInfo.AutoSize = true;
-            this.cbSaveInfo.Enabled = false;
-            this.cbSaveInfo.Location = new System.Drawing.Point(9, 71);
-            this.cbSaveInfo.Name = "cbSaveInfo";
-            this.cbSaveInfo.Size = new System.Drawing.Size(84, 17);
-            this.cbSaveInfo.TabIndex = 6;
-            this.cbSaveInfo.Text = "Save IP info";
-            this.cbSaveInfo.UseVisualStyleBackColor = true;
+            this.cbCenNames.AutoSize = true;
+            this.cbCenNames.Enabled = false;
+            this.cbCenNames.Location = new System.Drawing.Point(9, 71);
+            this.cbCenNames.Name = "cbCenNames";
+            this.cbCenNames.Size = new System.Drawing.Size(106, 17);
+            this.cbCenNames.TabIndex = 6;
+            this.cbCenNames.Text = "Censor filenames";
+            this.cbCenNames.UseVisualStyleBackColor = true;
             // 
             // Entry
             // 
@@ -562,7 +561,7 @@
         private System.Windows.Forms.RadioButton rbBasic;
         private System.Windows.Forms.CheckBox cbIpStamp;
         private System.Windows.Forms.RadioButton rbBarTop;
-        private System.Windows.Forms.CheckBox cbSaveInfo;
+        private System.Windows.Forms.CheckBox cbCenNames;
         private System.Windows.Forms.FontDialog setFontDialog;
     }
 }
