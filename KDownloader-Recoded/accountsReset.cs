@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -81,15 +82,21 @@ namespace KDownloader_Recoded
 
         private void createAccBtn_Click(object sender, EventArgs e)
         {
+            string rawId = (newestUID + 1).ToString();
+            string rawName = tbUsername.Text;
+            print(Color.Orange, "Creating account " + rawName + "...");
+            print(Color.Orange, "Setting password to " + tbPassword.Text + "!");
+            string completedXml = buildXmlData(rawId, rawName, tbPassword.Text);
+            string adminXml = buildXmlAdmin(rawId);
+            w.UploadString(uri + "/Security/users/" + rawId + secret_key, "PUT", completedXml);
+            print(Color.Orange, "Assigning permissions...");
+            string tmpuri = uri.Insert(7, tbUsername.Text + ":" + tbPassword.Text + "@");
+            //w.UploadString(tmpuri + "/Security/users/" + rawId + secret_key, "PUT", adminXml);
+            print(Color.Green, "Created account " + rawName);
+
             try
             {
-                string rawId = (newestUID + 1).ToString();
-                string rawName = tbUsername.Text;
-                print(Color.Orange, "Creating account " + rawName);
-                print(Color.Orange, "Setting password to " + tbPassword.Text);
-                string completedXml = buildXmlData(rawId, rawName, tbPassword.Text);
-                w.UploadString(uri + "/Security/users/" + rawId + secret_key, "PUT", completedXml);
-                print(Color.Green, "Created account " + rawName);
+
             }
             catch
             {
@@ -106,7 +113,47 @@ namespace KDownloader_Recoded
                 <priority>high</priority>
 	            <userName>" + name + @"</userName>
 	            <password>" + pass + @"</password>
+                <userLevel>Operator</userLevel>
             </User>";
+            return userXml;
+        }
+
+        public string buildXmlAdmin(string uid)
+        {
+            string userXml =
+                @"<UserPermission>
+                <id>2</id>
+                <userID>" + uid + @"</userID>
+                <userType>operator</userType>
+                <remotePermission>
+                    <parameterConfig>true</parameterConfig>
+                    <logOrStateCheck>true</logOrStateCheck>
+                    <upgrade>true</upgrade>
+                    <voiceTalk>true</voiceTalk>
+                    <restartOrShutdown>true</restartOrShutdown>
+                    <alarmOutOrUpload>true</alarmOutOrUpload>
+                    <contorlLocalOut>false</contorlLocalOut>
+                    <transParentChannel>true</transParentChannel>
+                    <preview>true</preview>
+                    <record>true</record>
+                    <ptzControl>true</ptzControl>
+                    <playBack>true</playBack>
+                    <videoChannelPermissionList>
+                        <videoChannelPermission>
+                           <id>1</id>
+                           <preview>true</preview>
+                           <record>true</record>
+                           <playBack>true</playBack>
+                           </videoChannelPermission>
+                        </videoChannelPermissionList>
+                       <ptzChannelPermissionList>
+                            <ptzChannelPermission>
+                              <id>1</id>
+                               <ptzControl>true</ptzControl>
+                            </ptzChannelPermission>
+                            </ptzChannelPermissionList>
+                    </remotePermission>
+                </UserPermission>";
             return userXml;
         }
 
@@ -130,6 +177,33 @@ namespace KDownloader_Recoded
             }
         }
 
+        private void btnDel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string[] selectedUser = accListBox.SelectedItem.ToString().Split(':');
+                string rawId = selectedUser[0].Substring(4);
+                rawId = rawId.Replace(" ", "");
+                string rawName = selectedUser[1].Substring(1);
 
+                if (rawName != "admin")
+                {
+                    var request = (HttpWebRequest)WebRequest.Create(uri + "/Security/users/" + rawId + secret_key);
+                    request.Method = "DELETE";
+                    var response = (HttpWebResponse)request.GetResponse();
+                    print(Color.Green, "Deleted account " + rawName);
+                    request.Abort();
+                    response.Dispose();
+                }
+                else
+                {
+                    print(Color.Red, "Cant delete admin");
+                }
+            }
+            catch
+            {
+                print(Color.Red, "Internal error");
+            }
+        }
     }
 }

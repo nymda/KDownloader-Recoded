@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace KDownloader_Recoded
@@ -38,10 +33,20 @@ namespace KDownloader_Recoded
 
         public camData setCamData;
 
+        public aspectRatio setAspectRatio = new aspectRatio(1280, 720);
+        public aspectRatio template169 = new aspectRatio(1920, 1080);
+        public aspectRatio template43 = new aspectRatio(640, 480);
+        public aspectRatio setTemplate;
+
+        public bool isNormalising = true;
+        public bool isStamping = true;
+        public ipStyle setStyle = ipStyle.fancy;
+
         private void Entry_Load(object sender, EventArgs e)
         {
             populateDefaultCdatItems();
             CDATselect.CheckOnClick = true;
+            setTemplate = template169;
             readCamConf();
         }
 
@@ -149,7 +154,7 @@ namespace KDownloader_Recoded
                 ipAddrs = ipAddrs.OrderBy(x => GetNextInt32(rnd2)).ToList();
             }
 
-            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading, CBthreadDebug.Checked, CbIpTag.Checked)){
+            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading, CBthreadDebug.Checked, cbIpStamp.Checked, setStyle)){
                 var res = form.ShowDialog();
                 if (res == DialogResult.OK) {
                     this.Show();
@@ -224,6 +229,101 @@ namespace KDownloader_Recoded
                 about a = new about();
                 a.Show();
             }
+        }
+
+        public aspectRatio calcAspectRatio(decimal oldX, decimal oldY, decimal newX)
+        {
+            decimal newY = (oldY / oldX) * newX;
+            Console.WriteLine(newY);
+            return new aspectRatio((int)newX, (int)newY);
+        }
+
+        private void nudWidth_ValueChanged(object sender, EventArgs e)
+        {
+            if(rb169.Checked || rb43.Checked)
+            {
+                aspectRatio nar = calcAspectRatio(setTemplate.width, setTemplate.height, (int)nudWidth.Value);
+                setAspectRatio = nar;
+                nudHeight.Value = nar.height;
+            }
+            else
+            {
+                setAspectRatio = new aspectRatio((int)nudWidth.Value, (int)nudHeight.Value);
+            }
+        }
+
+        private void nudHeight_ValueChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void rb169_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rb169.Checked)
+            {
+                setTemplate = template169;
+                nudWidth.Value = setTemplate.width;
+                nudHeight.Value = setTemplate.height;
+                aspectRatio nar = calcAspectRatio(setTemplate.width, setTemplate.height, (int)nudWidth.Value);
+                setAspectRatio = nar;
+            }
+        }
+
+        private void rb43_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rb43.Checked)
+            {
+                setTemplate = template43;
+                nudWidth.Value = setTemplate.width;
+                nudHeight.Value = setTemplate.height;
+                aspectRatio nar = calcAspectRatio(setTemplate.width, setTemplate.height, (int)nudWidth.Value);
+                setAspectRatio = nar;
+            }
+        }
+
+        private void rbCustom_CheckedChanged(object sender, EventArgs e)
+        {
+            nudHeight.Enabled = rbCustom.Checked;
+        }
+
+        private void cbNormalise_CheckedChanged(object sender, EventArgs e)
+        {
+            rb169.Enabled = cbNormalise.Checked;
+            rb43.Enabled = cbNormalise.Checked;
+            rbCustom.Enabled = cbNormalise.Checked;
+            nudWidth.Enabled = cbNormalise.Checked;
+            nudHeight.Enabled = cbNormalise.Checked;
+            isNormalising = cbNormalise.Checked;
+        }
+
+        private void cbIpStamp_CheckedChanged(object sender, EventArgs e)
+        {
+            rbFancy.Enabled = cbIpStamp.Checked;
+            rbBasic.Enabled = cbIpStamp.Checked;
+            rbBarTop.Enabled = cbIpStamp.Checked;
+            rbBarBottom.Enabled = cbIpStamp.Checked;
+            btnFont.Enabled = cbIpStamp.Checked;
+            isStamping = cbIpStamp.Checked;
+        }
+
+        private void rbFancy_CheckedChanged(object sender, EventArgs e)
+        {
+            setStyle = ipStyle.fancy;
+        }
+
+        private void rbBasic_CheckedChanged(object sender, EventArgs e)
+        {
+            setStyle = ipStyle.basic;
+        }
+
+        private void rbBarTop_CheckedChanged(object sender, EventArgs e)
+        {
+            setStyle = ipStyle.barTop;
+        }
+
+        private void rbBarBottom_CheckedChanged(object sender, EventArgs e)
+        {
+            setStyle = ipStyle.barBottom;
         }
     }
 }

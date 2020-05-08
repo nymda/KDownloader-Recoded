@@ -140,5 +140,10 @@ namespace KDownloader_Recoded
 
             }
         }
+
+        private void confBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

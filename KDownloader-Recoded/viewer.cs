@@ -43,7 +43,11 @@ namespace KDownloader_Recoded
         public List<Thread> dlThreads = new List<Thread> { };
         public List<shiftItem> shiftReg = new List<shiftItem> { };
 
-        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing, bool console, bool ipTag)
+        public graphicsHandler gHandle = new graphicsHandler();
+
+        public ipStyle style;
+
+        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing, bool console, bool ipTag, ipStyle style)
         {
             InitializeComponent();
             this.showing = showing;
@@ -53,6 +57,7 @@ namespace KDownloader_Recoded
             this.outdir = outdir;
             this.console = console;
             this.ipTag = ipTag;
+            this.style = style;
             ipAddrs = ips;
         }
 
@@ -199,10 +204,42 @@ namespace KDownloader_Recoded
 
                     if (DoIpTag)
                     {
-                        g.FillRectangle(Brushes.Beige, 2, 2, largerWidth + 7, totalheight + 7);
-                        g.FillRectangle(Brushes.Black, 5, 5, largerWidth, totalheight);
-                        g.DrawString(intIp, luc, Brushes.White, new Point(6, 7));
-                        g.DrawString(combinedCredsPT, luc, Brushes.White, new Point(5, 8 + (int)sizeOfIp.Height));
+                        if(style == ipStyle.fancy || style == ipStyle.basic)
+                        {
+                            g.DrawImage(gHandle.generateStamp(intIp, combinedCredsPT, luc, bmp.Width, style), 2, 2);
+                        }
+                        else if(style == ipStyle.barTop)
+                        {
+                            Bitmap stamp = gHandle.generateStamp(intIp, combinedCredsPT, luc, bmp.Width, style);
+                            Bitmap temp = new Bitmap(bmp.Width, bmp.Height + stamp.Height);
+                            Graphics gtemp = Graphics.FromImage(temp);
+                            gtemp.DrawImage(stamp, 0, 0);
+                            gtemp.DrawImage(bmp, 0, stamp.Height);
+
+                            bmp = new Bitmap(temp);
+
+                            stamp.Dispose();
+                            temp.Dispose();
+                            gtemp.Dispose();
+                            GC.Collect();
+                        }
+                        else if(style == ipStyle.barBottom)
+                        {
+                            Bitmap stamp = gHandle.generateStamp(intIp, combinedCredsPT, luc, bmp.Width, style);
+                            Bitmap temp = new Bitmap(bmp.Width, bmp.Height + stamp.Height);
+                            Graphics gtemp = Graphics.FromImage(temp);
+                            gtemp.DrawImage(bmp, 0, 0);
+                            gtemp.DrawImage(stamp, 0, bmp.Height);
+
+                            bmp = new Bitmap(temp);
+
+                            stamp.Dispose();
+                            temp.Dispose();
+                            gtemp.Dispose();
+                            GC.Collect();
+                        }
+
+                        gHandle.tidy();
                     }
                     else
                     {
@@ -216,6 +253,8 @@ namespace KDownloader_Recoded
 
                     string ipSafe = ip.Replace(".", "-");
                     ipSafe = ipSafe.Replace(":", "-");
+
+                    Console.WriteLine(bmp.GetType().Name);
 
                     string saveName = RandomString(5) + "-" + ipSafe + ".jpg";
 
@@ -234,7 +273,7 @@ namespace KDownloader_Recoded
                     subPBsix.Image = shiftReg[6].img;
 
                     Bitmap save = bmp.Clone(new Rectangle(0, 0, bmp.Width, bmp.Height), PixelFormat.DontCare);
-                    save.Save(dir + "/" + saveName);
+                    save.Save(dir + "/" + saveName, ImageFormat.Jpeg);
                     cPrint(Color.DarkGreen, thridAsText + "Wrote " + new FileInfo(dir + "/" + saveName).Length + " bytes to disk");
 
                     if (shiftReg.Count > 8)

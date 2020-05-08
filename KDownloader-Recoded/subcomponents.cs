@@ -88,4 +88,110 @@ namespace KDownloader_Recoded
             return new string(Enumerable.Repeat(chars, length).Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
     }
+
+    public class graphicsHandler
+    {
+        public Bitmap canvas = new Bitmap(1, 1);
+        public Graphics g;
+        public Bitmap generateStamp(string ip, string userpass, Font font, int imgWidth, ipStyle style = ipStyle.fancy)
+        {
+            canvas = new Bitmap(1, 1);
+            Graphics g = Graphics.FromImage(canvas);
+
+            SizeF _ipSize = g.MeasureString(ip, font);
+            SizeF _upSize = g.MeasureString(userpass, font);
+            int setWidth = 0;
+
+            if (_ipSize.Width > _upSize.Width)
+            {
+                setWidth = (int)_ipSize.Width;
+            }
+            else
+            {
+                setWidth = (int)_upSize.Width;
+            }
+
+            //leave space for a 2px buffer
+            setWidth = setWidth + 8;
+            int setHeight = (int)_ipSize.Height + (int)_upSize.Height + 8;
+
+            canvas.Dispose();
+            g.Dispose();
+
+            if(style == ipStyle.fancy)
+            {
+                canvas = new Bitmap(setWidth, setHeight);
+                g = Graphics.FromImage(canvas);
+
+                Color midGray = Color.FromArgb(128, 128, 128);
+                Color vDarkGray = Color.FromArgb(64, 64, 64);
+                Pen FourPxBlack = new Pen(Brushes.Black, 4);
+                Pen TwoPxLGray = new Pen(midGray, 2);
+                Pen OnePxVDarkGray = new Pen(vDarkGray, 1);
+                g.FillRectangle(Brushes.LightGray, 0, 0, setWidth, setHeight);
+                g.DrawRectangle(FourPxBlack, 2, 2, setWidth - 4, setHeight - 4);
+                g.DrawRectangle(TwoPxLGray, 1, 1, setWidth - 2, setHeight - 2);
+                g.DrawLine(OnePxVDarkGray, 0, 0, 0, setHeight);
+                g.DrawLine(OnePxVDarkGray, 1, 1, 1, setHeight);
+                g.DrawLine(OnePxVDarkGray, 0, setHeight - 1, setWidth - 2, setHeight - 1);
+                g.DrawLine(OnePxVDarkGray, 0, setHeight - 2, setWidth - 3, setHeight - 2);
+
+                g.DrawString(ip, font, Brushes.Black, 4, 6);
+                g.DrawString(userpass, font, Brushes.Black, 4, 6 + (int)_ipSize.Height);
+            }
+            if(style == ipStyle.basic)
+            {
+                canvas = new Bitmap(setWidth, setHeight);
+                g = Graphics.FromImage(canvas);
+
+                Color midGray = Color.FromArgb(128, 128, 128);
+                SolidBrush mGrayBrush = new SolidBrush(midGray);
+                g.FillRectangle(mGrayBrush, 0, 0, setWidth, setHeight);
+
+                g.DrawString(ip, font, Brushes.Black, 4, 6);
+                g.DrawString(userpass, font, Brushes.Black, 4, 6 + (int)_ipSize.Height);
+            }
+            if(style == ipStyle.barBottom || style == ipStyle.barTop)
+            {
+                canvas = new Bitmap(imgWidth, (setHeight / 2) - 4);
+                g = Graphics.FromImage(canvas);
+
+                g.FillRectangle(Brushes.LightGray, 0, 0, canvas.Width, canvas.Height);
+                string combo = ip + " | " + userpass;
+                g.DrawString(combo, font, Brushes.Black, 1, 1);
+                string time = DateTime.Now.ToString();
+                SizeF timeSize = g.MeasureString(time, font);
+                g.DrawString(time, font, Brushes.Black, canvas.Width - (int)timeSize.Width - 2, 1);
+            }
+
+            g.Dispose();
+            return canvas;
+        }
+
+        public void tidy()
+        {
+            canvas.Dispose();
+            GC.Collect();
+        }
+    }
+
+    public class aspectRatio
+    {
+        public int width { get; set; }
+        public int height { get; set; }
+
+        public aspectRatio(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+        }
+    }
+
+    public enum ipStyle : int
+    {
+        fancy = 0,
+        basic = 1,
+        barTop = 2,
+        barBottom = 3
+    }
 }

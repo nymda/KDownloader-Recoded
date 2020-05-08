@@ -96,6 +96,7 @@
             this.confBtn.TabIndex = 6;
             this.confBtn.Text = "Download configuration";
             this.confBtn.UseVisualStyleBackColor = true;
+            this.confBtn.Click += new System.EventHandler(this.confBtn_Click);
             // 
             // decConfBtn
             // 
