@@ -313,6 +313,7 @@
             // 
             // nudWidth
             // 
+            this.nudWidth.Enabled = false;
             this.nudWidth.Location = new System.Drawing.Point(128, 59);
             this.nudWidth.Maximum = new decimal(new int[] {
             3840,
@@ -350,6 +351,7 @@
             // rbCustom
             // 
             this.rbCustom.AutoSize = true;
+            this.rbCustom.Enabled = false;
             this.rbCustom.Location = new System.Drawing.Point(6, 88);
             this.rbCustom.Name = "rbCustom";
             this.rbCustom.Size = new System.Drawing.Size(60, 17);
@@ -362,6 +364,7 @@
             // 
             this.rb169.AutoSize = true;
             this.rb169.Checked = true;
+            this.rb169.Enabled = false;
             this.rb169.Location = new System.Drawing.Point(6, 42);
             this.rb169.Name = "rb169";
             this.rb169.Size = new System.Drawing.Size(46, 17);
@@ -374,6 +377,7 @@
             // rb43
             // 
             this.rb43.AutoSize = true;
+            this.rb43.Enabled = false;
             this.rb43.Location = new System.Drawing.Point(6, 65);
             this.rb43.Name = "rb43";
             this.rb43.Size = new System.Drawing.Size(40, 17);
