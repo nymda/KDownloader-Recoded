@@ -112,8 +112,8 @@ namespace KDownloader_Recoded
             }
 
             //leave space for a 2px buffer
-            setWidth = setWidth + 8;
-            int setHeight = (int)_ipSize.Height + (int)_upSize.Height + 8;
+            setWidth = setWidth + 12;
+            int setHeight = (int)_ipSize.Height + (int)_upSize.Height + 12;
 
             canvas.Dispose();
             g.Dispose();
@@ -125,9 +125,9 @@ namespace KDownloader_Recoded
 
                 Color midGray = Color.FromArgb(128, 128, 128);
                 Color vDarkGray = Color.FromArgb(64, 64, 64);
-                Pen FourPxBlack = new Pen(Brushes.Black, 4);
-                Pen TwoPxLGray = new Pen(midGray, 2);
-                Pen OnePxVDarkGray = new Pen(vDarkGray, 1);
+                Pen FourPxBlack = new Pen(Brushes.Black, 8);
+                Pen TwoPxLGray = new Pen(midGray, 4);
+                Pen OnePxVDarkGray = new Pen(vDarkGray, 2);
                 g.FillRectangle(Brushes.LightGray, 0, 0, setWidth, setHeight);
                 g.DrawRectangle(FourPxBlack, 2, 2, setWidth - 4, setHeight - 4);
                 g.DrawRectangle(TwoPxLGray, 1, 1, setWidth - 2, setHeight - 2);
@@ -156,12 +156,12 @@ namespace KDownloader_Recoded
                 canvas = new Bitmap(imgWidth, (setHeight / 2) - 4);
                 g = Graphics.FromImage(canvas);
 
-                g.FillRectangle(Brushes.LightGray, 0, 0, canvas.Width, canvas.Height);
+                g.FillRectangle(Brushes.Black, 0, 0, canvas.Width, canvas.Height);
                 string combo = ip + " | " + userpass;
-                g.DrawString(combo, font, Brushes.Black, 1, 1);
+                g.DrawString(combo, font, Brushes.White, 1, 1);
                 string time = DateTime.Now.ToString();
                 SizeF timeSize = g.MeasureString(time, font);
-                g.DrawString(time, font, Brushes.Black, canvas.Width - (int)timeSize.Width - 2, 1);
+                g.DrawString(time, font, Brushes.White, canvas.Width - (int)timeSize.Width - 2, 1);
             }
 
             g.Dispose();

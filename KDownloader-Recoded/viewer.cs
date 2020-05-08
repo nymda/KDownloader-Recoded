@@ -47,7 +47,7 @@ namespace KDownloader_Recoded
 
         public ipStyle style;
 
-        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing, bool console, bool ipTag, ipStyle style)
+        public viewer(int threadCount, camData cdat, string imgdir, string outdir, List<String> ips, Form showing, bool console, bool ipTag, ipStyle style, Font luc)
         {
             InitializeComponent();
             this.showing = showing;
@@ -58,6 +58,7 @@ namespace KDownloader_Recoded
             this.console = console;
             this.ipTag = ipTag;
             this.style = style;
+            this.luc = luc;
             ipAddrs = ips;
         }
 

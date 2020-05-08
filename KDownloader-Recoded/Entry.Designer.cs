@@ -64,6 +64,7 @@
             this.cbIpStamp = new System.Windows.Forms.CheckBox();
             this.rbBarTop = new System.Windows.Forms.RadioButton();
             this.cbSaveInfo = new System.Windows.Forms.CheckBox();
+            this.setFontDialog = new System.Windows.Forms.FontDialog();
             this.GBfiles.SuspendLayout();
             this.GBdata.SuspendLayout();
             this.GBthreads.SuspendLayout();
@@ -284,6 +285,7 @@
             this.groupBox1.Controls.Add(this.rb169);
             this.groupBox1.Controls.Add(this.rb43);
             this.groupBox1.Controls.Add(this.cbNormalise);
+            this.groupBox1.Enabled = false;
             this.groupBox1.Location = new System.Drawing.Point(6, 191);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(188, 113);
@@ -384,8 +386,6 @@
             // cbNormalise
             // 
             this.cbNormalise.AutoSize = true;
-            this.cbNormalise.Checked = true;
-            this.cbNormalise.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbNormalise.Location = new System.Drawing.Point(6, 19);
             this.cbNormalise.Name = "cbNormalise";
             this.cbNormalise.Size = new System.Drawing.Size(124, 17);
@@ -428,6 +428,7 @@
             this.btnFont.TabIndex = 13;
             this.btnFont.Text = "Set font";
             this.btnFont.UseVisualStyleBackColor = true;
+            this.btnFont.Click += new System.EventHandler(this.btnFont_Click);
             // 
             // rbFancy
             // 
@@ -562,6 +563,7 @@
         private System.Windows.Forms.CheckBox cbIpStamp;
         private System.Windows.Forms.RadioButton rbBarTop;
         private System.Windows.Forms.CheckBox cbSaveInfo;
+        private System.Windows.Forms.FontDialog setFontDialog;
     }
 }
 

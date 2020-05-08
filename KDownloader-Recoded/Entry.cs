@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -41,6 +42,8 @@ namespace KDownloader_Recoded
         public bool isNormalising = true;
         public bool isStamping = true;
         public ipStyle setStyle = ipStyle.fancy;
+
+        public Font font = new Font("Lucida Console", 15);
 
         private void Entry_Load(object sender, EventArgs e)
         {
@@ -154,7 +157,7 @@ namespace KDownloader_Recoded
                 ipAddrs = ipAddrs.OrderBy(x => GetNextInt32(rnd2)).ToList();
             }
 
-            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading, CBthreadDebug.Checked, cbIpStamp.Checked, setStyle)){
+            using(var form = new viewer(threadCount, setCamData, saveImgPath, savePath, ipAddrs, loading, CBthreadDebug.Checked, cbIpStamp.Checked, setStyle, font)){
                 var res = form.ShowDialog();
                 if (res == DialogResult.OK) {
                     this.Show();
@@ -324,6 +327,15 @@ namespace KDownloader_Recoded
         private void rbBarBottom_CheckedChanged(object sender, EventArgs e)
         {
             setStyle = ipStyle.barBottom;
+        }
+
+        private void btnFont_Click(object sender, EventArgs e)
+        {
+            setFontDialog.Font = font;
+            if (setFontDialog.ShowDialog() != DialogResult.Cancel)
+            {
+                font = setFontDialog.Font;
+            }
         }
     }
 }
