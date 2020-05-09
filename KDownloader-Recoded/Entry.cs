@@ -146,6 +146,11 @@ namespace KDownloader_Recoded
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            if (rbCustom.Checked)
+            {
+                setAspectRatio = new aspectRatio((int)nudWidth.Value, (int)nudHeight.Value);
+            }
+
             Form loading = new spawningThreadMsg();
             loading.Show();
 
