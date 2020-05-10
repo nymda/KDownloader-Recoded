@@ -177,6 +177,8 @@ namespace KDownloader_Recoded
             enl.setAR = setAspectRatio;
             enl.normaliseImage = isNormalising;
             enl.setAR = setAspectRatio;
+            enl.timestamp = cbTime.Checked;
+            enl.anonFileNames = cbCenNames.Checked;
 
             using(var form = new viewer(enl)){
                 var res = form.ShowDialog();
@@ -340,26 +342,44 @@ namespace KDownloader_Recoded
             rbBarBottom.Enabled = cbIpStamp.Checked;
             btnFont.Enabled = cbIpStamp.Checked;
             isStamping = cbIpStamp.Checked;
+
+            if ((rbBarTop.Checked || rbBarBottom.Checked) && cbIpStamp.Checked)
+            {
+                cbTime.Enabled = true;
+            }
+            else if (!cbIpStamp.Checked)
+            {
+                cbTime.Enabled = false;
+            }
+            else
+            {
+                cbTime.Enabled = false;
+            }
+
         }
 
         private void rbFancy_CheckedChanged(object sender, EventArgs e)
         {
             setStyle = ipStyle.fancy;
+            cbTime.Checked = false;
         }
 
         private void rbBasic_CheckedChanged(object sender, EventArgs e)
         {
             setStyle = ipStyle.basic;
+            cbTime.Checked = false;
         }
 
         private void rbBarTop_CheckedChanged(object sender, EventArgs e)
         {
             setStyle = ipStyle.barTop;
+            cbTime.Enabled = rbBarTop.Checked;
         }
 
         private void rbBarBottom_CheckedChanged(object sender, EventArgs e)
         {
             setStyle = ipStyle.barBottom;
+            cbTime.Enabled = rbBarBottom.Checked;
         }
 
         private void btnFont_Click(object sender, EventArgs e)

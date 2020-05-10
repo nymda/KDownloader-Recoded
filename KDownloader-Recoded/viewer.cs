@@ -48,6 +48,8 @@ namespace KDownloader_Recoded
         public graphicsHandler gHandle = new graphicsHandler();
 
         public ipStyle style;
+        public bool timestamp;
+        public bool anonFileNames;
 
         public viewer(entryViewerLink enl)
         {
@@ -64,6 +66,8 @@ namespace KDownloader_Recoded
             this.normalising = enl.normaliseImage;
             this.setAR = enl.setAR;
             this.ipAddrs = enl.ips;
+            this.timestamp = enl.timestamp;
+            this.anonFileNames = enl.anonFileNames;
         }
 
         public void cPrint(Color c, string text)
@@ -220,11 +224,11 @@ namespace KDownloader_Recoded
                     {
                         if(style == ipStyle.fancy || style == ipStyle.basic)
                         {
-                            g.DrawImage(gHandle.generateStamp(intIp, combinedCredsPT, luc, bmp.Width, style), 2, 2);
+                            g.DrawImage(gHandle.generateStamp(intIp, combinedCredsPT, luc, bmp.Width, timestamp, style), 2, 2);
                         }
                         else if(style == ipStyle.barTop)
                         {
-                            Bitmap stamp = gHandle.generateStamp(intIp, combinedCredsPT, luc, bmp.Width, style);
+                            Bitmap stamp = gHandle.generateStamp(intIp, combinedCredsPT, luc, bmp.Width, timestamp, style);
                             Bitmap temp = new Bitmap(bmp.Width, bmp.Height + stamp.Height);
                             Graphics gtemp = Graphics.FromImage(temp);
                             gtemp.DrawImage(stamp, 0, 0);
@@ -239,7 +243,7 @@ namespace KDownloader_Recoded
                         }
                         else if(style == ipStyle.barBottom)
                         {
-                            Bitmap stamp = gHandle.generateStamp(intIp, combinedCredsPT, luc, bmp.Width, style);
+                            Bitmap stamp = gHandle.generateStamp(intIp, combinedCredsPT, luc, bmp.Width, timestamp, style);
                             Bitmap temp = new Bitmap(bmp.Width, bmp.Height + stamp.Height);
                             Graphics gtemp = Graphics.FromImage(temp);
                             gtemp.DrawImage(bmp, 0, 0);
@@ -270,7 +274,16 @@ namespace KDownloader_Recoded
 
                     Console.WriteLine(bmp.GetType().Name);
 
-                    string saveName = RandomString(5) + "-" + ipSafe + ".jpg";
+                    string saveName = "";
+
+                    if (anonFileNames)
+                    {
+                        saveName = RandomString(15) + ".jpg";
+                    }
+                    else
+                    {
+                        saveName = RandomString(5) + "-" + ipSafe + ".jpg";
+                    }
 
                     if (useOutDir)
                     {

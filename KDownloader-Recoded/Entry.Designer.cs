@@ -35,6 +35,7 @@
             this.GBfiles = new System.Windows.Forms.GroupBox();
             this.LBcount = new System.Windows.Forms.Label();
             this.GBdata = new System.Windows.Forms.GroupBox();
+            this.cbCenNames = new System.Windows.Forms.CheckBox();
             this.ESTlabel = new System.Windows.Forms.Label();
             this.CBrandOrd = new System.Windows.Forms.CheckBox();
             this.GBthreads = new System.Windows.Forms.GroupBox();
@@ -63,8 +64,8 @@
             this.rbBasic = new System.Windows.Forms.RadioButton();
             this.cbIpStamp = new System.Windows.Forms.CheckBox();
             this.rbBarTop = new System.Windows.Forms.RadioButton();
-            this.cbCenNames = new System.Windows.Forms.CheckBox();
             this.setFontDialog = new System.Windows.Forms.FontDialog();
+            this.cbTime = new System.Windows.Forms.CheckBox();
             this.GBfiles.SuspendLayout();
             this.GBdata.SuspendLayout();
             this.GBthreads.SuspendLayout();
@@ -140,6 +141,16 @@
             this.GBdata.TabIndex = 4;
             this.GBdata.TabStop = false;
             this.GBdata.Text = "Data";
+            // 
+            // cbCenNames
+            // 
+            this.cbCenNames.AutoSize = true;
+            this.cbCenNames.Location = new System.Drawing.Point(9, 71);
+            this.cbCenNames.Name = "cbCenNames";
+            this.cbCenNames.Size = new System.Drawing.Size(106, 17);
+            this.cbCenNames.TabIndex = 6;
+            this.cbCenNames.Text = "Censor filenames";
+            this.cbCenNames.UseVisualStyleBackColor = true;
             // 
             // ESTlabel
             // 
@@ -399,6 +410,7 @@
             // 
             // gbStyle
             // 
+            this.gbStyle.Controls.Add(this.cbTime);
             this.gbStyle.Controls.Add(this.rbBarBottom);
             this.gbStyle.Controls.Add(this.btnFont);
             this.gbStyle.Controls.Add(this.rbFancy);
@@ -481,16 +493,16 @@
             this.rbBarTop.UseVisualStyleBackColor = true;
             this.rbBarTop.CheckedChanged += new System.EventHandler(this.rbBarTop_CheckedChanged);
             // 
-            // cbCenNames
+            // cbTime
             // 
-            this.cbCenNames.AutoSize = true;
-            this.cbCenNames.Enabled = false;
-            this.cbCenNames.Location = new System.Drawing.Point(9, 71);
-            this.cbCenNames.Name = "cbCenNames";
-            this.cbCenNames.Size = new System.Drawing.Size(106, 17);
-            this.cbCenNames.TabIndex = 6;
-            this.cbCenNames.Text = "Censor filenames";
-            this.cbCenNames.UseVisualStyleBackColor = true;
+            this.cbTime.AutoSize = true;
+            this.cbTime.Enabled = false;
+            this.cbTime.Location = new System.Drawing.Point(105, 99);
+            this.cbTime.Name = "cbTime";
+            this.cbTime.Size = new System.Drawing.Size(77, 17);
+            this.cbTime.TabIndex = 9;
+            this.cbTime.Text = "Timestamp";
+            this.cbTime.UseVisualStyleBackColor = true;
             // 
             // Entry
             // 
@@ -567,6 +579,7 @@
         private System.Windows.Forms.RadioButton rbBarTop;
         private System.Windows.Forms.CheckBox cbCenNames;
         private System.Windows.Forms.FontDialog setFontDialog;
+        private System.Windows.Forms.CheckBox cbTime;
     }
 }
 

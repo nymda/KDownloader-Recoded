@@ -94,7 +94,7 @@ namespace KDownloader_Recoded
     {
         public Bitmap canvas = new Bitmap(1, 1);
         public Graphics g;
-        public Bitmap generateStamp(string ip, string userpass, Font font, int imgWidth, ipStyle style = ipStyle.fancy)
+        public Bitmap generateStamp(string ip, string userpass, Font font, int imgWidth, bool timestamp, ipStyle style = ipStyle.fancy)
         {
             canvas = new Bitmap(1, 1);
             Graphics g = Graphics.FromImage(canvas);
@@ -160,7 +160,11 @@ namespace KDownloader_Recoded
                 g.FillRectangle(Brushes.Black, 0, 0, canvas.Width, canvas.Height);
                 string combo = ip + " | " + userpass;
                 g.DrawString(combo, font, Brushes.White, 1, 1);
-                string time = DateTime.Now.ToString();
+                string time = "";
+                if (timestamp)
+                {
+                    time = DateTime.Now.ToString();
+                }
                 SizeF timeSize = g.MeasureString(time, font);
                 g.DrawString(time, font, Brushes.White, canvas.Width - (int)timeSize.Width - 2, 1);
             }
@@ -210,5 +214,7 @@ namespace KDownloader_Recoded
         public Font luc { get; set; }
         public bool normaliseImage { get; set; }
         public aspectRatio setAR { get; set; }
+        public bool timestamp { get; set; }
+        public bool anonFileNames { get; set; }
     }
 }
