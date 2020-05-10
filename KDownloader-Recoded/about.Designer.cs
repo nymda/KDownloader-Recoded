@@ -29,49 +29,48 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.aboutRTB = new System.Windows.Forms.RichTextBox();
             this.rainbow = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // aboutRTB
-            // 
-            this.aboutRTB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.aboutRTB.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutRTB.Location = new System.Drawing.Point(12, 12);
-            this.aboutRTB.Name = "aboutRTB";
-            this.aboutRTB.ReadOnly = true;
-            this.aboutRTB.Size = new System.Drawing.Size(494, 102);
-            this.aboutRTB.TabIndex = 0;
-            this.aboutRTB.Text = "~KDownloader Recoded~\n\n©Knedit 2020\nWritten by Knedit (http://knedit.pw).\nFree to" +
-    " use and modify.\nCreated for educational purposes.\n\nKDownloader is released unde" +
-    "r the GNU General Public License v2.0";
             // 
             // rainbow
             // 
             this.rainbow.Interval = 250;
             this.rainbow.Tick += new System.EventHandler(this.rainbow_Tick);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(439, 130);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
             // about
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(518, 126);
-            this.Controls.Add(this.aboutRTB);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(463, 153);
+            this.Controls.Add(this.pictureBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "about";
             this.Text = "About";
             this.Load += new System.EventHandler(this.about_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox aboutRTB;
         private System.Windows.Forms.Timer rainbow;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
